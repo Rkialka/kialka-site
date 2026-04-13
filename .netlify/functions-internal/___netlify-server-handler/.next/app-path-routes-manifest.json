@@ -1,0 +1,22 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/admin/curriculo/route": "/api/admin/curriculo",
+  "/api/admin/feedback/route": "/api/admin/feedback",
+  "/api/admin/login/route": "/api/admin/login",
+  "/api/admin/logout/route": "/api/admin/logout",
+  "/api/curriculo/route": "/api/curriculo",
+  "/api/feedback/route": "/api/feedback",
+  "/api/jobhunting/login/route": "/api/jobhunting/login",
+  "/favicon.ico/route": "/favicon.ico",
+  "/feedback/360/page": "/feedback/360",
+  "/feedback/admin/curriculo/page": "/feedback/admin/curriculo",
+  "/feedback/admin/feedback/page": "/feedback/admin/feedback",
+  "/feedback/admin/page": "/feedback/admin",
+  "/feedback/curriculo/page": "/feedback/curriculo",
+  "/feedback/obrigado/page": "/feedback/obrigado",
+  "/feedback/page": "/feedback",
+  "/jobhunting/login/page": "/jobhunting/login",
+  "/jobhunting/page": "/jobhunting",
+  "/page": "/"
+}

@@ -1,0 +1,165 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/admin/curriculo",
+      "regex": "^/api/admin/curriculo(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/curriculo(?:/)?$"
+    },
+    {
+      "page": "/api/admin/feedback",
+      "regex": "^/api/admin/feedback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/feedback(?:/)?$"
+    },
+    {
+      "page": "/api/admin/login",
+      "regex": "^/api/admin/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/login(?:/)?$"
+    },
+    {
+      "page": "/api/admin/logout",
+      "regex": "^/api/admin/logout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/logout(?:/)?$"
+    },
+    {
+      "page": "/api/curriculo",
+      "regex": "^/api/curriculo(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/curriculo(?:/)?$"
+    },
+    {
+      "page": "/api/feedback",
+      "regex": "^/api/feedback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/feedback(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/login",
+      "regex": "^/api/jobhunting/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/jobhunting/login(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/feedback",
+      "regex": "^/feedback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/feedback(?:/)?$"
+    },
+    {
+      "page": "/feedback/360",
+      "regex": "^/feedback/360(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/feedback/360(?:/)?$"
+    },
+    {
+      "page": "/feedback/admin",
+      "regex": "^/feedback/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/feedback/admin(?:/)?$"
+    },
+    {
+      "page": "/feedback/admin/curriculo",
+      "regex": "^/feedback/admin/curriculo(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/feedback/admin/curriculo(?:/)?$"
+    },
+    {
+      "page": "/feedback/admin/feedback",
+      "regex": "^/feedback/admin/feedback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/feedback/admin/feedback(?:/)?$"
+    },
+    {
+      "page": "/feedback/curriculo",
+      "regex": "^/feedback/curriculo(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/feedback/curriculo(?:/)?$"
+    },
+    {
+      "page": "/feedback/obrigado",
+      "regex": "^/feedback/obrigado(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/feedback/obrigado(?:/)?$"
+    },
+    {
+      "page": "/jobhunting",
+      "regex": "^/jobhunting(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/jobhunting(?:/)?$"
+    },
+    {
+      "page": "/jobhunting/login",
+      "regex": "^/jobhunting/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/jobhunting/login(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

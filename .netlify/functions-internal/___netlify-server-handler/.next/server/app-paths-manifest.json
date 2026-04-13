@@ -1,0 +1,22 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/admin/curriculo/route": "app/api/admin/curriculo/route.js",
+  "/api/admin/feedback/route": "app/api/admin/feedback/route.js",
+  "/api/admin/login/route": "app/api/admin/login/route.js",
+  "/api/admin/logout/route": "app/api/admin/logout/route.js",
+  "/api/curriculo/route": "app/api/curriculo/route.js",
+  "/api/feedback/route": "app/api/feedback/route.js",
+  "/api/jobhunting/login/route": "app/api/jobhunting/login/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/feedback/360/page": "app/feedback/360/page.js",
+  "/feedback/admin/curriculo/page": "app/feedback/admin/curriculo/page.js",
+  "/feedback/admin/feedback/page": "app/feedback/admin/feedback/page.js",
+  "/feedback/admin/page": "app/feedback/admin/page.js",
+  "/feedback/curriculo/page": "app/feedback/curriculo/page.js",
+  "/feedback/obrigado/page": "app/feedback/obrigado/page.js",
+  "/feedback/page": "app/feedback/page.js",
+  "/jobhunting/login/page": "app/jobhunting/login/page.js",
+  "/jobhunting/page": "app/jobhunting/page.js",
+  "/page": "app/page.js"
+}

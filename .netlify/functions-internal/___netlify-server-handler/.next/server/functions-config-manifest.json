@@ -1,0 +1,1 @@
+{"version":1,"functions":{"/_middleware":{"runtime":"nodejs","matchers":[{"regexp":"(?!.*)","originalSource":"/feedback/admin/curriculo/:path*"},{"regexp":"(?!.*)","originalSource":"/feedback/admin/feedback/:path*"},{"regexp":"(?!.*)","originalSource":"/jobhunting"},{"regexp":"(?!.*)","originalSource":"/jobhunting/:path*"}]}}}
