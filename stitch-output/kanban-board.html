@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Job Hunt | Architectural Noir Board</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#003257",
+                        "on-surface": "#e8e1da",
+                        "tertiary-fixed-dim": "#9dcaff",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed": "#3b0800",
+                        "primary-container": "#fd592a",
+                        "secondary": "#ffb5a1",
+                        "on-primary": "#601400",
+                        "on-secondary-fixed-variant": "#7d2c15",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-background": "#e8e1da",
+                        "on-tertiary-container": "#002b4c",
+                        "inverse-on-surface": "#33302b",
+                        "surface-dim": "#15130f",
+                        "secondary-container": "#812e17",
+                        "surface-container-highest": "#37342f",
+                        "surface": "#15130f",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#100e0a",
+                        "primary-fixed-dim": "#ffb5a1",
+                        "surface-tint": "#ffb5a1",
+                        "inverse-surface": "#e8e1da",
+                        "outline-variant": "#5b4039",
+                        "surface-container": "#221f1b",
+                        "tertiary-container": "#2b95ec",
+                        "inverse-primary": "#b22c00",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#ffdbd1",
+                        "on-error": "#690005",
+                        "primary": "#ffb5a1",
+                        "tertiary-fixed": "#d1e4ff",
+                        "on-secondary-container": "#ffa086",
+                        "outline": "#ab8981",
+                        "on-secondary": "#5f1602",
+                        "secondary-fixed": "#ffdbd1",
+                        "background": "#15130f",
+                        "surface-container-low": "#1e1b17",
+                        "surface-container-high": "#2c2a25",
+                        "on-primary-fixed-variant": "#882000",
+                        "surface-variant": "#37342f",
+                        "tertiary": "#9dcaff",
+                        "on-secondary-fixed": "#3b0800",
+                        "on-tertiary-fixed": "#001d35",
+                        "secondary-fixed-dim": "#ffb5a1",
+                        "on-primary-container": "#541000",
+                        "surface-bright": "#3c3933",
+                        "on-surface-variant": "#e4beb5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .noir-gradient { background: linear-gradient(135deg, #fd592a 0%, #812e17 100%); }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface selection:bg-primary-container/30">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center w-full px-6 py-4 z-50 bg-[#15130f] font-['Manrope'] tracking-[-0.02em] leading-relaxed docked full-width top-0 sticky">
+<div class="flex items-center gap-8">
+<h1 class="text-2xl font-bold tracking-tighter text-[#f5f0e8]">Job Hunt</h1>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#fd592a] font-bold border-b-2 border-[#fd592a] hover:text-[#ffb5a1] transition-colors duration-300" href="#">Board</a>
+<a class="text-[#f5f0e8]/60 hover:text-[#ffb5a1] transition-colors duration-300" href="#">Applications</a>
+<a class="text-[#f5f0e8]/60 hover:text-[#ffb5a1] transition-colors duration-300" href="#">Analytics</a>
+<a class="text-[#f5f0e8]/60 hover:text-[#ffb5a1] transition-colors duration-300" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#f5f0e8]/60 text-sm font-medium hover:text-[#ffb5a1] transition-colors">Logout</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline/20">
+<img class="w-full h-full object-cover" data-alt="professional corporate headshot of a person with a neutral background and sharp focus for a user profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDEqu37LVno4VGGKzgYyaQHENWhm0yoM9XoTa9NnYfe5vGVBMKZ-sIDFyzYgT9MeYME3-jKEzes0KXO0QmSYc_glKpD9Cjza7lWjPiehTfkMgOj0EOsxN27UB1EK9UFEr_9fTEp_nM5rLzrGlq6fTK5N_zAN8hymjSBEOU9-UNSwCdBwXRz24LjKBnYXTyjaa0GdKiEsIalFF1w-eRIfxM9MaAd5jWhU-4kyGKctem3trvDSsx2uOoGu0_nBxHFzAL16ptQy3fcPk"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation (Web) -->
+<aside class="hidden lg:flex flex-col h-full fixed left-0 top-0 w-64 bg-[#15130f] border-r border-white/5 pt-20 px-4 z-40">
+<div class="mb-8 px-2">
+<p class="font-['Manrope'] uppercase tracking-[0.05em] text-[10px] text-on-surface-variant/40">Workflow</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-[#fd592a] font-bold transition-all Active: translate-x-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">view_kanban</span>
+<span class="font-['Manrope'] uppercase tracking-[0.05em] text-xs">Board</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#f5f0e8]/40 hover:bg-[#1a1916] hover:text-[#f5f0e8] transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-['Manrope'] uppercase tracking-[0.05em] text-xs">Applications</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#f5f0e8]/40 hover:bg-[#1a1916] hover:text-[#f5f0e8] transition-all" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-['Manrope'] uppercase tracking-[0.05em] text-xs">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#f5f0e8]/40 hover:bg-[#1a1916] hover:text-[#f5f0e8] transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Manrope'] uppercase tracking-[0.05em] text-xs">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Workspace -->
+<main class="lg:pl-64 pt-4 min-h-screen">
+<div class="px-6 mb-6 flex justify-between items-end">
+<div>
+<h2 class="text-3xl font-extrabold tracking-[-0.04em] text-on-surface">Digital Drafting Table</h2>
+<p class="text-on-surface-variant/60 text-sm mt-1">24 active opportunities tracked across 6 stages</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-high px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider text-on-surface-variant hover:bg-surface-variant transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filter
+                </button>
+<button class="noir-gradient px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest text-on-primary shadow-2xl flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> New Entry
+                </button>
+</div>
+</div>
+<!-- Kanban Board Horizontal Scroll Container -->
+<div class="flex overflow-x-auto gap-1 px-6 pb-12 no-scrollbar min-h-[calc(100vh-180px)]">
+<!-- Column 1: To Apply -->
+<section class="flex-shrink-0 w-80 bg-surface-container-low rounded-t-xl flex flex-col">
+<div class="p-4 border-t-4 border-tertiary-container flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline font-black text-xs uppercase tracking-[0.1em] text-on-surface-variant">To Apply</h3>
+<span class="bg-tertiary-container/20 text-tertiary-container px-2 py-0.5 rounded text-[10px] font-bold">08</span>
+</div>
+<div class="flex flex-col gap-4 p-4 overflow-y-auto no-scrollbar">
+<!-- Card -->
+<div class="bg-surface-container-high p-5 rounded-xl hover:bg-surface-container-highest transition-all group cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h4 class="font-bold text-on-surface leading-tight">Linear</h4>
+<p class="text-on-surface-variant/80 text-sm">Product Designer</p>
+</div>
+<span class="bg-primary-container/10 text-primary-container text-[10px] font-bold px-2 py-1 rounded-full">85%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-surface-variant text-on-surface-variant text-[10px] font-medium px-2 py-0.5 rounded-full">High Match</span>
+<span class="text-[10px] text-on-surface-variant/40 ml-auto flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span> 2h ago
+                            </span>
+</div>
+</div>
+<!-- Card -->
+<div class="bg-surface-container-high p-5 rounded-xl hover:bg-surface-container-highest transition-all group cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h4 class="font-bold text-on-surface leading-tight">Stripe</h4>
+<p class="text-on-surface-variant/80 text-sm">UX Architect</p>
+</div>
+<span class="bg-primary-container/10 text-primary-container text-[10px] font-bold px-2 py-1 rounded-full">92%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-surface-variant text-on-surface-variant text-[10px] font-medium px-2 py-0.5 rounded-full">Optimal Match</span>
+<span class="text-[10px] text-on-surface-variant/40 ml-auto flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span> 1d ago
+                            </span>
+</div>
+</div>
+</div>
+</section>
+<!-- Column 2: Action Needed -->
+<section class="flex-shrink-0 w-80 bg-surface-container-low rounded-t-xl flex flex-col">
+<div class="p-4 border-t-4 border-secondary-container flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline font-black text-xs uppercase tracking-[0.1em] text-on-surface-variant">Action Needed</h3>
+<span class="bg-secondary-container/20 text-secondary-container px-2 py-0.5 rounded text-[10px] font-bold">03</span>
+</div>
+<div class="flex flex-col gap-4 p-4">
+<div class="bg-surface-container-high p-5 rounded-xl hover:bg-surface-container-highest transition-all group cursor-pointer relative overflow-hidden">
+<div class="absolute right-0 top-0 noir-gradient h-full w-1"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<h4 class="font-bold text-on-surface leading-tight">Airbnb</h4>
+<p class="text-on-surface-variant/80 text-sm">Staff Designer</p>
+</div>
+<span class="bg-primary-container/10 text-primary-container text-[10px] font-bold px-2 py-1 rounded-full">78%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-secondary-container/30 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full">Follow-up</span>
+<span class="text-[10px] text-on-surface-variant/40 ml-auto">Urgent</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Column 3: Applied -->
+<section class="flex-shrink-0 w-80 bg-surface-container-low rounded-t-xl flex flex-col">
+<div class="p-4 border-t-4 border-[#4ADE80] flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline font-black text-xs uppercase tracking-[0.1em] text-on-surface-variant">Applied</h3>
+<span class="bg-[#4ADE80]/10 text-[#4ADE80] px-2 py-0.5 rounded text-[10px] font-bold">12</span>
+</div>
+<div class="flex flex-col gap-4 p-4">
+<div class="bg-surface-container-high p-5 rounded-xl hover:bg-surface-container-highest transition-all group cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h4 class="font-bold text-on-surface leading-tight">Vercel</h4>
+<p class="text-on-surface-variant/80 text-sm">UI Engineer</p>
+</div>
+<span class="bg-primary-container/10 text-primary-container text-[10px] font-bold px-2 py-1 rounded-full">89%</span>
+</div>
+<p class="text-[10px] text-on-surface-variant/40 mb-3 uppercase tracking-tighter">Submitted Oct 12</p>
+<div class="flex items-center gap-2">
+<span class="bg-surface-variant text-on-surface-variant text-[10px] font-medium px-2 py-0.5 rounded-full">High Match</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Column 4: Interviewing -->
+<section class="flex-shrink-0 w-80 bg-surface-container-low rounded-t-xl flex flex-col">
+<div class="p-4 border-t-4 border-error flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline font-black text-xs uppercase tracking-[0.1em] text-on-surface-variant">Interviewing</h3>
+<span class="bg-error/10 text-error px-2 py-0.5 rounded text-[10px] font-bold">02</span>
+</div>
+<div class="flex flex-col gap-4 p-4">
+<div class="bg-surface-container-high p-5 rounded-xl hover:bg-surface-container-highest transition-all group cursor-pointer border-l-2 border-error">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h4 class="font-bold text-on-surface leading-tight">Notion</h4>
+<p class="text-on-surface-variant/80 text-sm">Lead Designer</p>
+</div>
+<span class="bg-primary-container/10 text-primary-container text-[10px] font-bold px-2 py-1 rounded-full">94%</span>
+</div>
+<div class="flex flex-col gap-2 mb-3">
+<div class="flex items-center gap-2 text-[10px] text-on-surface-variant/80 bg-surface-variant/30 p-2 rounded">
+<span class="material-symbols-outlined text-[14px]">videocam</span>
+<span>Portfolio Review - Tomorrow 10am</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="bg-surface-variant text-on-surface-variant text-[10px] font-medium px-2 py-0.5 rounded-full">Final Stage</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Column 5: Offer -->
+<section class="flex-shrink-0 w-80 bg-surface-container-low rounded-t-xl flex flex-col">
+<div class="p-4 border-t-4 border-[#22C55E] flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline font-black text-xs uppercase tracking-[0.1em] text-on-surface-variant">Offer</h3>
+<span class="bg-[#22C55E]/10 text-[#22C55E] px-2 py-0.5 rounded text-[10px] font-bold">01</span>
+</div>
+<div class="flex flex-col gap-4 p-4">
+<div class="bg-surface-container-high p-5 rounded-xl hover:bg-surface-container-highest transition-all group cursor-pointer ring-1 ring-[#22C55E]/30 ring-inset">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h4 class="font-bold text-[#22C55E] leading-tight">Anthropic</h4>
+<p class="text-on-surface-variant/80 text-sm">Product Architect</p>
+</div>
+<span class="bg-primary-container/10 text-primary-container text-[10px] font-bold px-2 py-1 rounded-full">98%</span>
+</div>
+<div class="noir-gradient p-2 rounded text-[10px] font-black text-on-primary text-center uppercase tracking-widest mb-3">
+                            Review Contract
+                        </div>
+<div class="flex items-center gap-2">
+<span class="bg-surface-variant text-on-surface-variant text-[10px] font-medium px-2 py-0.5 rounded-full">Offer Sent</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Column 6: Archive -->
+<section class="flex-shrink-0 w-80 bg-surface-container-low rounded-t-xl flex flex-col opacity-60 hover:opacity-100 transition-opacity">
+<div class="p-4 border-t-4 border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline font-black text-xs uppercase tracking-[0.1em] text-on-surface-variant">Archive</h3>
+<span class="bg-outline-variant/20 text-on-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">45</span>
+</div>
+<div class="flex flex-col gap-4 p-4">
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant/10 cursor-not-allowed">
+<h4 class="font-bold text-on-surface/40 text-xs">Figma</h4>
+<p class="text-on-surface-variant/30 text-[10px]">Senior Designer</p>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant/10 cursor-not-allowed">
+<h4 class="font-bold text-on-surface/40 text-xs">Meta</h4>
+<p class="text-on-surface-variant/30 text-[10px]">Product Lead</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action for Mobile Navigation Pivot (Visual Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-[#15130f] flex justify-around items-center py-4 px-6 z-50 border-t border-white/5">
+<button class="flex flex-col items-center text-[#fd592a] font-bold">
+<span class="material-symbols-outlined">view_kanban</span>
+<span class="text-[10px] mt-1">BOARD</span>
+</button>
+<button class="flex flex-col items-center text-[#f5f0e8]/40">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px] mt-1">APPS</span>
+</button>
+<button class="flex flex-col items-center text-[#f5f0e8]/40">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="text-[10px] mt-1">DATA</span>
+</button>
+<button class="flex flex-col items-center text-[#f5f0e8]/40">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] mt-1">CORE</span>
+</button>
+</nav>
+<!-- Keyboard Shortcuts / Accessibility Indicator -->
+<div class="fixed bottom-6 right-6 hidden xl:flex gap-4">
+<div class="bg-surface-container-highest/80 backdrop-blur-xl px-4 py-2 rounded-full border border-outline-variant/10 flex items-center gap-3">
+<div class="flex gap-1">
+<span class="bg-surface-container-lowest px-1.5 py-0.5 rounded text-[10px] font-mono border border-outline-variant/30 text-primary">⌘</span>
+<span class="bg-surface-container-lowest px-1.5 py-0.5 rounded text-[10px] font-mono border border-outline-variant/30 text-primary">K</span>
+</div>
+<span class="text-[10px] uppercase font-bold tracking-widest text-on-surface-variant/60">Command Center</span>
+</div>
+</div>
+</body></html>

@@ -5,6 +5,14 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const adminPassword = process.env.ADMIN_PASSWORD
 
+  // Protect home page
+  if (pathname === '/') {
+    const session = request.cookies.get('jh_session')
+    if (!session || session.value !== adminPassword) {
+      return NextResponse.redirect(new URL('/jobhunting/login', request.url))
+    }
+  }
+
   // Protect /feedback/admin/curriculo and /feedback/admin/feedback
   if (
     pathname.startsWith('/feedback/admin/curriculo') ||
@@ -17,7 +25,15 @@ export function proxy(request: NextRequest) {
   }
 
   // Protect /jobhunting (but not /jobhunting/login)
-  if (pathname === '/jobhunting' || pathname.startsWith('/jobhunting/') && !pathname.startsWith('/jobhunting/login')) {
+  if (pathname === '/jobhunting' || (pathname.startsWith('/jobhunting/') && !pathname.startsWith('/jobhunting/login'))) {
+    const session = request.cookies.get('jh_session')
+    if (!session || session.value !== adminPassword) {
+      return NextResponse.redirect(new URL('/jobhunting/login', request.url))
+    }
+  }
+
+  // Protect /email
+  if (pathname === '/email' || pathname.startsWith('/email/')) {
     const session = request.cookies.get('jh_session')
     if (!session || session.value !== adminPassword) {
       return NextResponse.redirect(new URL('/jobhunting/login', request.url))
@@ -29,9 +45,12 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    '/',
     '/feedback/admin/curriculo/:path*',
     '/feedback/admin/feedback/:path*',
     '/jobhunting',
     '/jobhunting/:path*',
+    '/email',
+    '/email/:path*',
   ],
 }

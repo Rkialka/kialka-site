@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Career Feedback | Executive Portals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#5f1602",
+                    "on-primary-fixed": "#3b0800",
+                    "on-error-container": "#ffdad6",
+                    "error-container": "#93000a",
+                    "surface-dim": "#15130f",
+                    "tertiary-container": "#2b95ec",
+                    "on-background": "#e8e1da",
+                    "inverse-on-surface": "#33302b",
+                    "secondary-fixed-dim": "#ffb5a1",
+                    "on-tertiary-fixed": "#001d35",
+                    "surface": "#15130f",
+                    "outline": "#ab8981",
+                    "on-surface": "#e8e1da",
+                    "error": "#ffb4ab",
+                    "on-primary-container": "#541000",
+                    "secondary": "#ffb5a1",
+                    "outline-variant": "#5b4039",
+                    "background": "#15130f",
+                    "on-secondary-fixed": "#3b0800",
+                    "secondary-fixed": "#ffdbd1",
+                    "primary-fixed": "#ffdbd1",
+                    "on-primary": "#601400",
+                    "inverse-primary": "#b22c00",
+                    "surface-variant": "#37342f",
+                    "surface-tint": "#ffb5a1",
+                    "primary": "#ffb5a1",
+                    "surface-container-high": "#2c2a25",
+                    "surface-container": "#221f1b",
+                    "on-secondary-container": "#ffa086",
+                    "on-tertiary-container": "#002b4c",
+                    "tertiary-fixed-dim": "#9dcaff",
+                    "on-primary-fixed-variant": "#882000",
+                    "surface-container-lowest": "#100e0a",
+                    "on-error": "#690005",
+                    "surface-bright": "#3c3933",
+                    "secondary-container": "#812e17",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "surface-container-low": "#1e1b17",
+                    "on-secondary-fixed-variant": "#7d2c15",
+                    "on-tertiary": "#003257",
+                    "tertiary": "#9dcaff",
+                    "surface-container-highest": "#37342f",
+                    "on-surface-variant": "#e4beb5",
+                    "primary-container": "#fd592a",
+                    "inverse-surface": "#e8e1da",
+                    "primary-fixed-dim": "#ffb5a1",
+                    "tertiary-fixed": "#d1e4ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0E0C08;
+            font-family: 'Manrope', sans-serif;
+            color: #e8e1da;
+        }
+        .executive-card {
+            background-color: #1A1916;
+            border: 1px solid #2E2C28;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center">
+<!-- Top Navigation Shell -->
+<header class="w-full fixed top-0 z-50 bg-[#15130f] dark:bg-[#15130f]">
+<nav class="flex justify-center items-center w-full px-8 py-6 max-w-7xl mx-auto">
+<div class="flex items-center justify-between w-full">
+<div class="text-lg font-extrabold tracking-tight text-[#e8e1da]">
+                    Career Feedback
+                </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-[#ffb5a1] font-bold font-['Manrope'] text-sm tracking-widest uppercase hover:text-[#ffb5a1] transition-colors duration-300" href="#">Portals</a>
+<a class="text-[#ab8981] font-['Manrope'] text-sm tracking-widest uppercase font-bold hover:text-[#ffb5a1] transition-colors duration-300" href="#">Advisory</a>
+<a class="text-[#ab8981] font-['Manrope'] text-sm tracking-widest uppercase font-bold hover:text-[#ffb5a1] transition-colors duration-300" href="#">Settings</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#ab8981]">account_circle</span>
+</div>
+</div>
+</nav>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center w-full px-6 pt-24 pb-12">
+<div class="max-w-4xl w-full text-center mb-16">
+<h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter text-[#F5F0E8] mb-6 leading-tight">
+                Career Feedback
+            </h1>
+<p class="text-[#ab8981] text-lg font-medium tracking-wide max-w-2xl mx-auto opacity-80">
+                Precision intelligence for the modern executive. Refine your narrative and analyze your impact with absolute authority.
+            </p>
+</div>
+<!-- Bento Layout for Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
+<!-- Card 1: Resume Evaluation -->
+<div class="executive-card p-10 flex flex-col justify-between transition-all duration-500 hover:border-[#5b4039] group">
+<div class="mb-12">
+<div class="mb-6 flex justify-between items-start">
+<span class="material-symbols-outlined text-[#ffb5a1] text-4xl" data-icon="description">description</span>
+<span class="text-[10px] tracking-widest uppercase font-bold text-[#ab8981] opacity-50">Module 01</span>
+</div>
+<h2 class="text-2xl font-bold text-[#e8e1da] mb-4">Resume Evaluation</h2>
+<p class="text-[#ab8981] text-sm leading-relaxed font-medium">
+                        Get professional AI-driven feedback on your resume to stand out in the executive market. Optimized for high-stakes talent acquisition pipelines.
+                    </p>
+</div>
+<div>
+<button class="w-full py-4 px-6 bg-[#E84A1C] text-white font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:opacity-90 active:scale-95 flex justify-center items-center gap-2">
+                        Start Evaluation
+                        <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2: 360 Feedback -->
+<div class="executive-card p-10 flex flex-col justify-between transition-all duration-500 hover:border-[#5b4039] group">
+<div class="mb-12">
+<div class="mb-6 flex justify-between items-start">
+<span class="material-symbols-outlined text-[#ffb5a1] text-4xl" data-icon="group">group</span>
+<span class="text-[10px] tracking-widest uppercase font-bold text-[#ab8981] opacity-50">Module 02</span>
+</div>
+<h2 class="text-2xl font-bold text-[#e8e1da] mb-4">360 Feedback</h2>
+<p class="text-[#ab8981] text-sm leading-relaxed font-medium">
+                        Collect and analyze comprehensive performance insights from your professional network. Sophisticated attribution models for deep career analysis.
+                    </p>
+</div>
+<div>
+<button class="w-full py-4 px-6 bg-[#E84A1C] text-white font-bold text-sm tracking-widest uppercase transition-all duration-300 hover:opacity-90 active:scale-95 flex justify-center items-center gap-2">
+                        Request Feedback
+                        <span class="material-symbols-outlined text-sm" data-icon="hub">hub</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Decorative Subtle Element -->
+<div class="mt-20 opacity-20 pointer-events-none select-none">
+<div class="h-[1px] w-64 bg-gradient-to-r from-transparent via-[#ab8981] to-transparent"></div>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full mt-auto bg-transparent">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-12 py-8 opacity-40 hover:opacity-100 transition-opacity duration-500">
+<div class="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase text-[#ab8981] mb-4 md:mb-0">
+                © 2024 Silent Authority Executive Portals
+            </div>
+<div class="flex gap-8">
+<a class="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase text-[#ab8981] hover:text-[#e8e1da] transition-opacity" href="#">Privacy</a>
+<a class="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase text-[#ab8981] hover:text-[#e8e1da] transition-opacity" href="#">Terms</a>
+<a class="font-['Manrope'] text-[10px] font-medium tracking-wider uppercase text-[#ab8981] hover:text-[#e8e1da] transition-opacity" href="#">Executive Support</a>
+</div>
+</div>
+</footer>
+<!-- Background texture / Ambient Light -->
+<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#fd592a] opacity-[0.03] blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#ab8981] opacity-[0.02] blur-[150px] rounded-full"></div>
+</div>
+</body></html>

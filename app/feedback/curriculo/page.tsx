@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 
 const SLIDERS = {
   stated: [
@@ -30,45 +29,60 @@ const SLIDERS = {
 
 type FormValues = Record<string, number>
 
+function getBarColor(v: number): string {
+  if (v >= 75) return '#3B6D11'
+  if (v >= 55) return '#185FA5'
+  if (v >= 40) return '#BA7517'
+  return '#A32D2D'
+}
+
 function SliderRow({ item, value, onChange }: {
   item: { key: string; label: string; hint: string }
   value: number
   onChange: (key: string, val: number) => void
 }) {
-  const getColor = (v: number) => {
-    if (v >= 75) return '#3B6D11'
-    if (v >= 55) return '#185FA5'
-    if (v >= 40) return '#BA7517'
-    return '#A32D2D'
-  }
-
   return (
-    <div className="mb-5">
-      <div className="flex justify-between items-start mb-1">
-        <div>
-          <span className="text-sm font-medium" style={{ color: '#F5F0E8' }}>{item.label}</span>
-          <p className="text-xs mt-0.5" style={{ color: '#5C5A54' }}>{item.hint}</p>
+    <div style={{ marginBottom: '24px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+        <div style={{ flex: 1, marginRight: '16px' }}>
+          <p style={{ color: '#F5F0E8', fontSize: '13px', fontWeight: 600, margin: '0 0 3px' }}>{item.label}</p>
+          <p style={{ color: '#5C5A54', fontSize: '11px', margin: 0 }}>{item.hint}</p>
         </div>
-        <span
-          className="ml-4 text-sm font-bold px-2 py-0.5 rounded flex-shrink-0"
-          style={{ backgroundColor: getColor(value), color: '#F5F0E8' }}
-        >
+        <span style={{
+          flexShrink: 0, padding: '2px 10px',
+          backgroundColor: getBarColor(value), color: '#F5F0E8',
+          fontSize: '12px', fontWeight: 700, minWidth: '36px', textAlign: 'center',
+        }}>
           {value}
         </span>
       </div>
       <input
-        type="range"
-        min={0}
-        max={100}
-        value={value}
-        onChange={(e) => onChange(item.key, parseInt(e.target.value))}
-        className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
-        style={{ accentColor: '#E84A1C' }}
+        type="range" min={0} max={100} value={value}
+        onChange={e => onChange(item.key, parseInt(e.target.value))}
+        style={{ width: '100%', height: '3px', cursor: 'pointer', accentColor: '#E84A1C' }}
       />
-      <div className="flex justify-between text-xs mt-0.5" style={{ color: '#5C5A54' }}>
-        <span>0</span>
-        <span>100</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '3px' }}>
+        <span style={{ color: '#5C5A54', fontSize: '10px' }}>0 — not credible</span>
+        <span style={{ color: '#5C5A54', fontSize: '10px' }}>100 — fully credible</span>
       </div>
+    </div>
+  )
+}
+
+function Section({ title, module, items, values, onChange }: {
+  title: string; module: string
+  items: { key: string; label: string; hint: string }[]
+  values: FormValues; onChange: (key: string, val: number) => void
+}) {
+  return (
+    <div style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', padding: '32px', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+        <h2 style={{ color: '#F5F0E8', fontSize: '16px', fontWeight: 700, letterSpacing: '-0.01em', margin: 0 }}>{title}</h2>
+        <span style={{ color: '#5C5A54', fontSize: '10px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>{module}</span>
+      </div>
+      {items.map(item => (
+        <SliderRow key={item.key} item={item} value={values[item.key]} onChange={onChange} />
+      ))}
     </div>
   )
 }
@@ -77,18 +91,14 @@ export default function CurriculoPage() {
   const router = useRouter()
   const [values, setValues] = useState<FormValues>(() => {
     const init: FormValues = {}
-    ;[...SLIDERS.stated, ...SLIDERS.results, ...SLIDERS.profile].forEach(
-      (s) => (init[s.key] = 50)
-    )
+    ;[...SLIDERS.stated, ...SLIDERS.results, ...SLIDERS.profile].forEach(s => (init[s.key] = 50))
     return init
   })
   const [comment, setComment] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
-  const handleChange = (key: string, val: number) => {
-    setValues((prev) => ({ ...prev, [key]: val }))
-  }
+  const handleChange = (key: string, val: number) => setValues(prev => ({ ...prev, [key]: val }))
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -112,100 +122,64 @@ export default function CurriculoPage() {
   }
 
   return (
-    <main className="min-h-screen p-6" style={{ backgroundColor: '#0E0C08' }}>
-      <div className="max-w-2xl mx-auto">
-        <Link href="/feedback" className="text-sm mb-8 inline-block" style={{ color: '#9A9488' }}>
-          ← Back
-        </Link>
-        <h1 className="text-2xl font-bold mb-1" style={{ color: '#F5F0E8' }}>Resume Evaluation</h1>
-        <p className="mb-8 text-sm" style={{ color: '#9A9488' }}>
-          Rate each item from 0 (not credible at all) to 100 (completely credible).
-        </p>
+    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#0E0C08', fontFamily: 'Manrope, sans-serif' }}>
+
+      <nav style={{
+        position: 'sticky', top: 0, zIndex: 50, backgroundColor: '#0E0C08',
+        borderBottom: '1px solid rgba(91,64,57,0.15)', padding: '16px 32px',
+      }}>
+        <div style={{ color: '#E84A1C', fontSize: '16px', fontWeight: 800, letterSpacing: '-0.02em' }}>
+          Resume Evaluation
+        </div>
+      </nav>
+
+      <div style={{ flex: 1, width: '100%', maxWidth: '680px', margin: '0 auto', padding: '48px 24px' }}>
+
+        <header style={{ marginBottom: '48px' }}>
+          <h1 style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '36px', letterSpacing: '-0.04em', margin: '0 0 12px' }}>
+            Resume Evaluation
+          </h1>
+          <p style={{ color: '#9A9488', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+            Rate each item from 0 (not credible at all) to 100 (completely credible).
+          </p>
+        </header>
 
         <form onSubmit={handleSubmit}>
-          {/* Section 1 */}
-          <div
-            className="p-5 mb-5"
-            style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '12px' }}
-          >
-            <h2 className="text-base font-semibold mb-4" style={{ color: '#F5F0E8' }}>Stated Skills</h2>
-            {SLIDERS.stated.map((item) => (
-              <SliderRow
-                key={item.key}
-                item={item}
-                value={values[item.key]}
-                onChange={handleChange}
-              />
-            ))}
-          </div>
+          <Section title="Stated Skills" module="Section 01" items={SLIDERS.stated} values={values} onChange={handleChange} />
+          <Section title="Achievements & Track Record" module="Section 02" items={SLIDERS.results} values={values} onChange={handleChange} />
+          <Section title="Profile & Fit" module="Section 03" items={SLIDERS.profile} values={values} onChange={handleChange} />
 
-          {/* Section 2 */}
-          <div
-            className="p-5 mb-5"
-            style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '12px' }}
-          >
-            <h2 className="text-base font-semibold mb-4" style={{ color: '#F5F0E8' }}>Achievements & Track Record</h2>
-            {SLIDERS.results.map((item) => (
-              <SliderRow
-                key={item.key}
-                item={item}
-                value={values[item.key]}
-                onChange={handleChange}
-              />
-            ))}
-          </div>
-
-          {/* Section 3 */}
-          <div
-            className="p-5 mb-5"
-            style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '12px' }}
-          >
-            <h2 className="text-base font-semibold mb-4" style={{ color: '#F5F0E8' }}>Profile & Fit</h2>
-            {SLIDERS.profile.map((item) => (
-              <SliderRow
-                key={item.key}
-                item={item}
-                value={values[item.key]}
-                onChange={handleChange}
-              />
-            ))}
-          </div>
-
-          {/* Optional comment */}
-          <div
-            className="p-5 mb-6"
-            style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '12px' }}
-          >
-            <label className="block text-sm font-medium mb-2" style={{ color: '#F5F0E8' }}>
-              Free comment <span style={{ color: '#5C5A54' }}>(optional)</span>
+          <div style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', padding: '32px', marginBottom: '16px' }}>
+            <label style={{ color: '#F5F0E8', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', display: 'block', marginBottom: '16px' }}>
+              Free comment <span style={{ color: '#5C5A54', fontWeight: 500, textTransform: 'none', letterSpacing: 0 }}>(optional)</span>
             </label>
             <textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              rows={4}
-              className="w-full p-3 text-sm resize-none outline-none"
-              style={{
-                backgroundColor: '#0E0C08',
-                border: '1px solid #2E2C28',
-                borderRadius: '8px',
-                color: '#F5F0E8',
-              }}
+              value={comment} onChange={e => setComment(e.target.value)} rows={4}
               placeholder="Any additional thoughts..."
+              style={{
+                width: '100%', padding: '12px', backgroundColor: '#0E0C08', border: 'none',
+                color: '#F5F0E8', fontSize: '14px', lineHeight: 1.6, resize: 'none', outline: 'none',
+                boxSizing: 'border-box', fontFamily: 'Manrope, sans-serif',
+              }}
             />
           </div>
 
-          {error && (
-            <p className="mb-4 text-sm" style={{ color: '#E84A1C' }}>{error}</p>
-          )}
+          {error && <p style={{ color: '#E84A1C', fontSize: '13px', marginBottom: '12px' }}>{error}</p>}
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full py-3 font-medium transition-opacity hover:opacity-80 disabled:opacity-50"
-            style={{ backgroundColor: '#E84A1C', color: '#F5F0E8', borderRadius: '12px' }}
-          >
-            {submitting ? 'Submitting...' : 'Submit evaluation'}
-          </button>
+          <div style={{ paddingBottom: '48px' }}>
+            <button
+              type="submit" disabled={submitting}
+              style={{
+                width: '100%', padding: '18px', backgroundColor: '#E84A1C', color: '#F5F0E8',
+                border: 'none', cursor: submitting ? 'not-allowed' : 'pointer',
+                fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                opacity: submitting ? 0.7 : 1, fontFamily: 'Manrope, sans-serif',
+              }}
+            >
+              {submitting ? 'Submitting...' : <>Submit Evaluation <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span></>}
+            </button>
+          </div>
         </form>
       </div>
     </main>

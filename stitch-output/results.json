@@ -1,0 +1,38 @@
+{
+  "homepage": {
+    "screenId": "1889fb0fd1054461817dce1761a0090c",
+    "htmlPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/homepage.html",
+    "imgPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/homepage.png",
+    "htmlLength": 12940
+  },
+  "login": {
+    "screenId": "11b8026b61b44170b1a2dc39eaeb6e0d",
+    "htmlPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/login.html",
+    "imgPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/login.png",
+    "htmlLength": 6369
+  },
+  "kanban-board": {
+    "screenId": "51327ed6f488427e8e8585a52e862250",
+    "htmlPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/kanban-board.html",
+    "imgPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/kanban-board.png",
+    "htmlLength": 18717
+  },
+  "email-client": {
+    "screenId": "86379552f44b4eb0b873cb3e73a55f68",
+    "htmlPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/email-client.html",
+    "imgPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/email-client.png",
+    "htmlLength": 16778
+  },
+  "feedback-360": {
+    "screenId": "1dee651190cc47c98f8982d9ec2618e2",
+    "htmlPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/feedback-360.html",
+    "imgPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/feedback-360.png",
+    "htmlLength": 11897
+  },
+  "feedback-home": {
+    "screenId": "d1a0fbf05ffc49e6b65b5cd3e8008b39",
+    "htmlPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/feedback-home.html",
+    "imgPath": "/Users/rkialka/Job Hunt/kialka-site/stitch-output/feedback-home.png",
+    "htmlLength": 9656
+  }
+}

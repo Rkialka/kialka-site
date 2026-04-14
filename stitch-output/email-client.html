@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Precision Archive</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#ffdbd1",
+                        "error-container": "#93000a",
+                        "on-primary-fixed-variant": "#882000",
+                        "on-primary-fixed": "#3b0800",
+                        "surface-container-lowest": "#100e0a",
+                        "surface-container-highest": "#37342f",
+                        "on-secondary-container": "#b8b4b0",
+                        "error": "#ffb4ab",
+                        "primary": "#ffb5a1",
+                        "surface-container-high": "#2c2a25",
+                        "outline-variant": "#5b4039",
+                        "primary-fixed-dim": "#ffb5a1",
+                        "primary-container": "#fd592a",
+                        "tertiary": "#9dcaff",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#001d35",
+                        "tertiary-container": "#2b95ec",
+                        "on-surface-variant": "#e4beb5",
+                        "tertiary-fixed": "#d1e4ff",
+                        "secondary-container": "#484743",
+                        "inverse-surface": "#e8e1da",
+                        "tertiary-fixed-dim": "#9dcaff",
+                        "on-secondary-fixed": "#1d1b18",
+                        "surface": "#15130f",
+                        "on-tertiary": "#003257",
+                        "on-tertiary-container": "#002b4c",
+                        "on-secondary": "#32302d",
+                        "secondary-fixed-dim": "#cac6c1",
+                        "secondary-fixed": "#e6e2dc",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e8e1da",
+                        "surface-tint": "#ffb5a1",
+                        "secondary": "#cac6c1",
+                        "on-tertiary-fixed-variant": "#00497c",
+                        "on-primary-container": "#541000",
+                        "outline": "#ab8981",
+                        "surface-dim": "#15130f",
+                        "surface-variant": "#37342f",
+                        "surface-container-low": "#1e1b17",
+                        "inverse-primary": "#b22c00",
+                        "on-surface": "#e8e1da",
+                        "surface-container": "#221f1b",
+                        "on-primary": "#601400",
+                        "background": "#15130f",
+                        "surface-bright": "#3c3933",
+                        "inverse-on-surface": "#33302b",
+                        "on-secondary-fixed-variant": "#484743"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-pill::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 16px;
+            background-color: #E84A1C;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #37342f; }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface selection:bg-primary-container/30 overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Column 1: SideNavBar -->
+<aside class="h-screen w-64 flex-shrink-0 bg-[#15130f] dark:bg-[#15130f] flex flex-col h-full py-6">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-8">
+<img alt="User profile" class="w-8 h-8 rounded-lg" data-alt="minimalist orange geometric logo on a dark black background, professional and architectural style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4exY3_bEfPYvfx8FLPV0eUq7fg8KZaNEUvw3gXilS52WCpsuLav1xNXc-lOqyGCs8PXDTGGmGFQywKxDah4Ey8qFEJyra3w_5TTeaRlCS_qicT7ll6RLX0MwT31pYbGelHoe-FJwKxxu_Yove0ekRCqiuFCEJk8kuWm4TS4DkTz72GUBtO8wpoljPANV8e9RLo082qz5MsPtutkrKLYxs0duKjqNtzjPScTWG1YSxJQKbZgzOldVjq5_rTrZ6oicmz7fv1OMFXh4"/>
+<div class="flex flex-col">
+<span class="text-lg font-bold text-[#E84A1C] tracking-tight">The Archive</span>
+<span class="font-['Manrope'] label-md tracking-wider uppercase text-stone-500 text-[10px]">Precision Email</span>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container py-2.5 rounded-md font-bold text-sm transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                    Compose
+                </button>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="relative flex items-center text-[#E84A1C] border-l-2 border-[#E84A1C] pl-4 py-2 font-bold font-['Manrope'] label-md tracking-wider uppercase hover:bg-[#1e1b17] transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-3 text-[20px]">inbox</span>
+                    Inbox
+                </div>
+<div class="text-stone-400 hover:text-stone-100 pl-4 py-2 transition-colors font-['Manrope'] label-md tracking-wider uppercase flex items-center cursor-pointer hover:bg-[#1e1b17]">
+<span class="material-symbols-outlined mr-3 text-[20px]">send</span>
+                    Sent
+                </div>
+<div class="text-stone-400 hover:text-stone-100 pl-4 py-2 transition-colors font-['Manrope'] label-md tracking-wider uppercase flex items-center cursor-pointer hover:bg-[#1e1b17]">
+<span class="material-symbols-outlined mr-3 text-[20px]">archive</span>
+                    Archive
+                </div>
+<div class="text-stone-400 hover:text-stone-100 pl-4 py-2 transition-colors font-['Manrope'] label-md tracking-wider uppercase flex items-center cursor-pointer hover:bg-[#1e1b17]">
+<span class="material-symbols-outlined mr-3 text-[20px]">delete</span>
+                    Trash
+                </div>
+</nav>
+<div class="px-6 mt-auto">
+<div class="p-4 bg-surface-container rounded-xl">
+<p class="text-[10px] text-stone-500 uppercase tracking-widest mb-2 font-bold">Storage</p>
+<div class="h-1 w-full bg-stone-800 rounded-full overflow-hidden">
+<div class="h-full bg-[#E84A1C] w-[65%]"></div>
+</div>
+<p class="text-[11px] text-stone-400 mt-2 font-medium">9.8 GB of 15 GB used</p>
+</div>
+</div>
+</aside>
+<!-- Column 2: List View -->
+<main class="flex-shrink-0 w-96 bg-surface-container-low flex flex-col">
+<div class="h-16 flex items-center px-6 bg-[#100e0a] dark:bg-[#100e0a] border-b border-white/5">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2 text-stone-500 text-[20px]">search</span>
+<input class="w-full bg-transparent border-none text-sm focus:ring-0 pl-8 text-on-surface placeholder:text-stone-600" placeholder="Search archive..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<!-- Active Email Item -->
+<div class="px-6 py-5 bg-surface-container-highest/40 cursor-pointer relative group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#E84A1C]"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-sm font-bold text-on-surface">Vector Design Studio</span>
+<span class="text-[10px] font-medium text-stone-500 tracking-wider">10:42 AM</span>
+</div>
+<h3 class="text-[13px] font-semibold text-primary mb-1">Q3 Architectural Guidelines Final</h3>
+<p class="text-xs text-stone-400 line-clamp-2 leading-relaxed">The precision metrics for the new modular system have been updated. Please review the attached...</p>
+</div>
+<!-- List Item -->
+<div class="px-6 py-5 hover:bg-surface-container-highest/20 cursor-pointer transition-colors border-b border-white/[0.02]">
+<div class="flex justify-between items-start mb-1">
+<div class="flex items-center gap-2">
+<span class="text-sm font-medium text-stone-300">Julian Koerner</span>
+<div class="w-1.5 h-1.5 rounded-full bg-[#E84A1C]"></div>
+</div>
+<span class="text-[10px] font-medium text-stone-500 tracking-wider">09:15 AM</span>
+</div>
+<h3 class="text-[13px] font-medium text-stone-200 mb-1">Assembly Line Feedback</h3>
+<p class="text-xs text-stone-500 line-clamp-2 leading-relaxed">We noticed a slight deviation in the torque specifications for the Series-7 chassis during...</p>
+</div>
+<!-- List Item -->
+<div class="px-6 py-5 hover:bg-surface-container-highest/20 cursor-pointer transition-colors border-b border-white/[0.02]">
+<div class="flex justify-between items-start mb-1">
+<span class="text-sm font-medium text-stone-300">System Monitor</span>
+<span class="text-[10px] font-medium text-stone-500 tracking-wider">YESTERDAY</span>
+</div>
+<h3 class="text-[13px] font-medium text-stone-200 mb-1">Weekly Health Report: Cluster A</h3>
+<p class="text-xs text-stone-500 line-clamp-2 leading-relaxed">All nodes operating at 99.98% efficiency. Thermal profiles are within the expected standard ranges...</p>
+</div>
+<!-- List Item -->
+<div class="px-6 py-5 hover:bg-surface-container-highest/20 cursor-pointer transition-colors border-b border-white/[0.02]">
+<div class="flex justify-between items-start mb-1">
+<span class="text-sm font-medium text-stone-300">Elena Vance</span>
+<span class="text-[10px] font-medium text-stone-500 tracking-wider">OCT 12</span>
+</div>
+<h3 class="text-[13px] font-medium text-stone-200 mb-1">Blueprint Revision #402</h3>
+<p class="text-xs text-stone-500 line-clamp-2 leading-relaxed">The structural load calculations for the cantilever section have been verified by the engineering...</p>
+</div>
+<!-- List Item -->
+<div class="px-6 py-5 hover:bg-surface-container-highest/20 cursor-pointer transition-colors border-b border-white/[0.02]">
+<div class="flex justify-between items-start mb-1">
+<span class="text-sm font-medium text-stone-300">Precision Ledger</span>
+<span class="text-[10px] font-medium text-stone-500 tracking-wider">OCT 11</span>
+</div>
+<h3 class="text-[13px] font-medium text-stone-200 mb-1">Invoicing Cycle: Sept</h3>
+<p class="text-xs text-stone-500 line-clamp-2 leading-relaxed">Your monthly statement for the Precision Archive enterprise tier is now available for download...</p>
+</div>
+</div>
+</main>
+<!-- Column 3: Detail View / Reading Pane -->
+<section class="flex-1 bg-surface-container-lowest flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="flex items-center justify-between px-8 w-full border-b border-white/5 h-16 bg-[#100e0a] dark:bg-[#100e0a]">
+<div class="flex items-center gap-6">
+<button class="text-stone-500 hover:text-stone-200 transition-colors flex items-center gap-2 font-['Manrope'] headline-sm font-light">
+<span class="material-symbols-outlined text-[22px]">reply</span>
+<span class="text-xs tracking-widest uppercase font-bold">Reply</span>
+</button>
+<button class="text-stone-500 hover:text-stone-200 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[22px]">archive</span>
+<span class="text-xs tracking-widest uppercase font-bold">Archive</span>
+</button>
+<button class="text-stone-500 hover:text-stone-200 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[22px]">delete</span>
+<span class="text-xs tracking-widest uppercase font-bold">Delete</span>
+</button>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-stone-500 hover:text-stone-200 transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Message Detail -->
+<div class="flex-1 overflow-y-auto px-12 py-16">
+<div class="max-w-[700px] mx-auto">
+<!-- Tags -->
+<div class="flex gap-2 mb-8">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-tighter rounded-sm">Engineering</span>
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-tighter rounded-sm">Confidential</span>
+</div>
+<h1 class="font-headline text-3xl font-light text-on-surface mb-8 tracking-tight leading-tight">Q3 Architectural Guidelines Final</h1>
+<div class="flex items-center justify-between pb-8 mb-12 border-b border-white/[0.03]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container-high rounded-full flex items-center justify-center border border-white/5">
+<span class="material-symbols-outlined text-stone-400">precision_manufacturing</span>
+</div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-on-surface">Vector Design Studio</span>
+<span class="text-xs text-stone-500 tracking-wide">contact@vector-studios.arch</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[11px] font-medium text-stone-500 uppercase tracking-[0.2em]">October 14, 2023</span>
+<p class="text-[10px] text-stone-600 mt-1">10:42 AM (2 hours ago)</p>
+</div>
+</div>
+<article class="font-body text-[15px] leading-[1.8] text-stone-300 space-y-6">
+<p>Team,</p>
+<p>We are pleased to announce the finalization of the <strong class="text-primary-fixed">Q3 Architectural Guidelines</strong>. This document outlines the precision standards required for all modular deployments scheduled for the upcoming cycle.</p>
+<p>Key updates include:</p>
+<ul class="space-y-4 list-none pl-4 border-l-2 border-primary-container/20">
+<li><span class="text-primary-container font-bold mr-2">01.</span> Tolerance levels for interlocking panels have been reduced to 0.05mm.</li>
+<li><span class="text-primary-container font-bold mr-2">02.</span> New composite material specs for high-stress joints are now mandatory.</li>
+<li><span class="text-primary-container font-bold mr-2">03.</span> Thermal expansion coefficients must be calculated using the Archive Tool v2.1.</li>
+</ul>
+<p>Please ensure all blueprint revisions are aligned with these specifications by EOD Friday. Non-compliant designs will be automatically flagged by the Precision Audit system.</p>
+<p>The full technical manual is attached below as a high-density schematic.</p>
+<div class="mt-12 pt-8 border-t border-white/[0.03]">
+<div class="flex items-center gap-4 p-4 bg-surface-container-high rounded-lg border border-white/[0.02] hover:border-white/[0.1] transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-primary-container group-hover:scale-110 transition-transform">picture_as_pdf</span>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface">Arch_Specs_Final_Q3.pdf</span>
+<span class="text-[10px] text-stone-500">14.2 MB • PDF Document</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-stone-600">download</span>
+</div>
+</div>
+<p class="pt-8 text-stone-500 text-sm italic">
+                            Regards,<br/>
+                            The Vector Design Engineering Team
+                        </p>
+</article>
+<div class="mt-16 flex gap-4">
+<button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface px-6 py-2.5 rounded-md text-sm font-bold transition-all border border-white/5 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">reply</span>
+                            Reply
+                        </button>
+<button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface px-6 py-2.5 rounded-md text-sm font-bold transition-all border border-white/5 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">forward</span>
+                            Forward
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</body></html>

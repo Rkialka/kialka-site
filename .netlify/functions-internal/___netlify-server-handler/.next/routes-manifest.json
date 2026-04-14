@@ -21,7 +21,64 @@
     "afterFiles": [],
     "fallback": []
   },
-  "dynamicRoutes": [],
+  "dynamicRoutes": [
+    {
+      "page": "/api/email/message/[uid]",
+      "regex": "^/api/email/message/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPuid": "nxtPuid"
+      },
+      "namedRegex": "^/api/email/message/(?<nxtPuid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/email/message/[uid]/flag",
+      "regex": "^/api/email/message/([^/]+?)/flag(?:/)?$",
+      "routeKeys": {
+        "nxtPuid": "nxtPuid"
+      },
+      "namedRegex": "^/api/email/message/(?<nxtPuid>[^/]+?)/flag(?:/)?$"
+    },
+    {
+      "page": "/api/email/message/[uid]/move",
+      "regex": "^/api/email/message/([^/]+?)/move(?:/)?$",
+      "routeKeys": {
+        "nxtPuid": "nxtPuid"
+      },
+      "namedRegex": "^/api/email/message/(?<nxtPuid>[^/]+?)/move(?:/)?$"
+    },
+    {
+      "page": "/api/email/message/[uid]/read",
+      "regex": "^/api/email/message/([^/]+?)/read(?:/)?$",
+      "routeKeys": {
+        "nxtPuid": "nxtPuid"
+      },
+      "namedRegex": "^/api/email/message/(?<nxtPuid>[^/]+?)/read(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/applications/[id]",
+      "regex": "^/api/jobhunting/applications/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/jobhunting/applications/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/applications/[id]/events",
+      "regex": "^/api/jobhunting/applications/([^/]+?)/events(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/jobhunting/applications/(?<nxtPid>[^/]+?)/events(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/commands/[id]",
+      "regex": "^/api/jobhunting/commands/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/jobhunting/commands/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
   "staticRoutes": [
     {
       "page": "/",
@@ -72,16 +129,88 @@
       "namedRegex": "^/api/curriculo(?:/)?$"
     },
     {
+      "page": "/api/email/folders",
+      "regex": "^/api/email/folders(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/email/folders(?:/)?$"
+    },
+    {
+      "page": "/api/email/messages",
+      "regex": "^/api/email/messages(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/email/messages(?:/)?$"
+    },
+    {
+      "page": "/api/email/send",
+      "regex": "^/api/email/send(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/email/send(?:/)?$"
+    },
+    {
       "page": "/api/feedback",
       "regex": "^/api/feedback(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/feedback(?:/)?$"
     },
     {
+      "page": "/api/jobhunting/analytics",
+      "regex": "^/api/jobhunting/analytics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/jobhunting/analytics(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/applications",
+      "regex": "^/api/jobhunting/applications(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/jobhunting/applications(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/commands",
+      "regex": "^/api/jobhunting/commands(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/jobhunting/commands(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/context",
+      "regex": "^/api/jobhunting/context(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/jobhunting/context(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/cv-feedback",
+      "regex": "^/api/jobhunting/cv\\-feedback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/jobhunting/cv\\-feedback(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/feedback-all",
+      "regex": "^/api/jobhunting/feedback\\-all(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/jobhunting/feedback\\-all(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/insights",
+      "regex": "^/api/jobhunting/insights(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/jobhunting/insights(?:/)?$"
+    },
+    {
       "page": "/api/jobhunting/login",
       "regex": "^/api/jobhunting/login(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/jobhunting/login(?:/)?$"
+    },
+    {
+      "page": "/api/jobhunting/logs",
+      "regex": "^/api/jobhunting/logs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/jobhunting/logs(?:/)?$"
+    },
+    {
+      "page": "/email",
+      "regex": "^/email(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/email(?:/)?$"
     },
     {
       "page": "/favicon.ico",
@@ -138,10 +267,46 @@
       "namedRegex": "^/jobhunting(?:/)?$"
     },
     {
+      "page": "/jobhunting/analytics",
+      "regex": "^/jobhunting/analytics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/jobhunting/analytics(?:/)?$"
+    },
+    {
+      "page": "/jobhunting/context",
+      "regex": "^/jobhunting/context(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/jobhunting/context(?:/)?$"
+    },
+    {
+      "page": "/jobhunting/cv",
+      "regex": "^/jobhunting/cv(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/jobhunting/cv(?:/)?$"
+    },
+    {
+      "page": "/jobhunting/feedback",
+      "regex": "^/jobhunting/feedback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/jobhunting/feedback(?:/)?$"
+    },
+    {
+      "page": "/jobhunting/intelligence",
+      "regex": "^/jobhunting/intelligence(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/jobhunting/intelligence(?:/)?$"
+    },
+    {
       "page": "/jobhunting/login",
       "regex": "^/jobhunting/login(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/jobhunting/login(?:/)?$"
+    },
+    {
+      "page": "/jobhunting/strategy",
+      "regex": "^/jobhunting/strategy(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/jobhunting/strategy(?:/)?$"
     }
   ],
   "dataRoutes": [],

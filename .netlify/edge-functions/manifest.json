@@ -4,6 +4,12 @@
     {
       "function": "___netlify-edge-handler-node-middleware",
       "name": "Next.js Middleware Handler",
+      "pattern": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/(\\/?index|\\/?index\\.json))?[\\/#\\?]?$",
+      "generator": "@netlify/plugin-nextjs@5.15.9"
+    },
+    {
+      "function": "___netlify-edge-handler-node-middleware",
+      "name": "Next.js Middleware Handler",
       "pattern": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/feedback\\/admin\\/curriculo(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json)?[\\/#\\?]?$",
       "generator": "@netlify/plugin-nextjs@5.15.9"
     },
@@ -23,6 +29,18 @@
       "function": "___netlify-edge-handler-node-middleware",
       "name": "Next.js Middleware Handler",
       "pattern": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/jobhunting(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json)?[\\/#\\?]?$",
+      "generator": "@netlify/plugin-nextjs@5.15.9"
+    },
+    {
+      "function": "___netlify-edge-handler-node-middleware",
+      "name": "Next.js Middleware Handler",
+      "pattern": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/email(\\.json)?[\\/#\\?]?$",
+      "generator": "@netlify/plugin-nextjs@5.15.9"
+    },
+    {
+      "function": "___netlify-edge-handler-node-middleware",
+      "name": "Next.js Middleware Handler",
+      "pattern": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/email(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\.json)?[\\/#\\?]?$",
       "generator": "@netlify/plugin-nextjs@5.15.9"
     }
   ]

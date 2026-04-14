@@ -1,26 +1,44 @@
-import Link from 'next/link'
-
 export default function ObrigadoPage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-6" style={{ backgroundColor: '#0E0C08' }}>
-      <div className="max-w-lg text-center">
-        <div
-          className="w-16 h-16 mx-auto mb-6 flex items-center justify-center text-2xl"
-          style={{ backgroundColor: '#1A1916', borderRadius: '12px', border: '1px solid #2E2C28' }}
-        >
-          ✓
+    <main style={{
+      minHeight: '100vh', display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center', padding: '24px',
+      backgroundColor: '#0E0C08', fontFamily: 'Manrope, sans-serif',
+    }}>
+      <div style={{ maxWidth: '480px', textAlign: 'center' }}>
+
+        {/* Icon */}
+        <div style={{
+          width: '64px', height: '64px', margin: '0 auto 28px',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backgroundColor: '#1A1916',
+          border: '1px solid #2E2C28',
+        }}>
+          <span className="material-symbols-outlined" style={{ color: '#E84A1C', fontSize: '28px' }}>check_circle</span>
         </div>
-        <h1 className="text-3xl font-bold mb-4" style={{ color: '#F5F0E8' }}>Submitted.</h1>
-        <p className="text-lg mb-8" style={{ color: '#9A9488', lineHeight: '1.7' }}>
-          Thank you for your honesty. This kind of feedback is rare and valuable.
+
+        <span style={{
+          display: 'block', marginBottom: '12px',
+          color: '#E84A1C', fontSize: '10px', fontWeight: 700,
+          letterSpacing: '0.2em', textTransform: 'uppercase',
+        }}>
+          Submitted
+        </span>
+        <h1 style={{
+          color: '#F5F0E8', fontWeight: 800,
+          fontSize: '40px', letterSpacing: '-0.04em', margin: '0 0 20px',
+        }}>
+          Thank you.
+        </h1>
+        <p style={{ color: '#9A9488', fontSize: '16px', lineHeight: 1.7, margin: 0 }}>
+          This kind of feedback is rare and genuinely valuable. It will be used to calibrate the next move.
         </p>
-        <Link
-          href="/feedback"
-          className="inline-block py-2.5 px-6 font-medium transition-opacity hover:opacity-80"
-          style={{ backgroundColor: '#1A1916', color: '#9A9488', borderRadius: '12px', border: '1px solid #2E2C28' }}
-        >
-          ← Back to home
-        </Link>
+
+        <div style={{ marginTop: '48px', height: '1px', background: 'linear-gradient(to right, transparent, #2E2C28, transparent)' }} />
+
+        <p style={{ marginTop: '24px', color: '#5C5A54', fontSize: '11px', letterSpacing: '0.1em' }}>
+          kialka.com.br
+        </p>
       </div>
     </main>
   )

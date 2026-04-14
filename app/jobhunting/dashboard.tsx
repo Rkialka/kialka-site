@@ -26,6 +26,8 @@ type Application = {
   apply_url: string | null
   cv_file: string | null
   notes: string | null
+  candidate_notes: string | null
+  application_qa: Array<{ question: string; answer: string; source?: string }> | null
   manual_action: string | null
   applied_at: string | null
   priority: boolean
@@ -117,7 +119,7 @@ function CardSkeleton() {
       style={{
         backgroundColor: '#1A1916',
         border: '1px solid #2E2C28',
-        borderRadius: '12px',
+        borderRadius: '4px',
         padding: '12px',
         marginBottom: '8px',
       }}
@@ -130,13 +132,20 @@ function CardSkeleton() {
 
 // ─── KanbanCard ───────────────────────────────────────────────────────────────
 
-function KanbanCard({ app, onClick }: { app: Application; onClick: () => void }) {
+function isEasyApply(ats: string | null): boolean {
+  if (!ats) return false
+  const a = ats.toLowerCase()
+  return a.includes('easy apply') || a.includes('candidatura simplificada') || a.includes('linkedin easy')
+}
+
+function KanbanCard({ app, onClick, onProcess }: { app: Application; onClick: () => void; onProcess?: (app: Application) => void }) {
   const isActionNeeded = app.status === 'action_needed'
   const isPriority = app.priority
+  const easyApply = isEasyApply(app.ats)
 
   let leftBorder = 'none'
-  if (isPriority) leftBorder = '3px solid #E84A1C'
-  else if (isActionNeeded) leftBorder = '3px solid #BA7517'
+  if (isPriority) leftBorder = '2px solid #E84A1C'
+  else if (isActionNeeded) leftBorder = '2px solid #BA7517'
 
   return (
     <div
@@ -145,11 +154,12 @@ function KanbanCard({ app, onClick }: { app: Application; onClick: () => void })
         backgroundColor: '#1A1916',
         border: '1px solid #2E2C28',
         borderLeft: leftBorder,
-        borderRadius: '12px',
+        borderRadius: '4px',
         padding: '12px',
         cursor: 'pointer',
         transition: 'border-color 0.15s',
         marginBottom: '8px',
+        fontFamily: 'Manrope, sans-serif',
       }}
       onMouseEnter={e => {
         (e.currentTarget as HTMLDivElement).style.borderColor = '#5C5A54'
@@ -178,7 +188,7 @@ function KanbanCard({ app, onClick }: { app: Application; onClick: () => void })
               fontSize: '11px',
               fontWeight: 700,
               padding: '2px 6px',
-              borderRadius: '6px',
+              borderRadius: '3px',
               flexShrink: 0,
             }}
           >
@@ -192,11 +202,26 @@ function KanbanCard({ app, onClick }: { app: Application; onClick: () => void })
         {app.role}
       </p>
 
-      {/* ATS + Status pill */}
-      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '6px' }}>
-        {app.ats && (
+      {/* ATS + Easy Apply badge + Status pill */}
+      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '6px' }}>
+        {easyApply ? (
+          <span
+            style={{
+              backgroundColor: 'rgba(59,109,17,0.18)',
+              color: '#6DBF3E',
+              border: '1px solid rgba(59,109,17,0.4)',
+              fontSize: '10px',
+              fontWeight: 700,
+              padding: '1px 7px',
+              borderRadius: '3px',
+              letterSpacing: '0.02em',
+            }}
+          >
+            ⚡ Easy Apply
+          </span>
+        ) : app.ats ? (
           <span style={{ color: '#5C5A54', fontSize: '11px' }}>{app.ats}</span>
-        )}
+        ) : null}
         <span
           style={{
             backgroundColor: statusColor(app.status),
@@ -204,7 +229,7 @@ function KanbanCard({ app, onClick }: { app: Application; onClick: () => void })
             fontSize: '10px',
             fontWeight: 600,
             padding: '1px 6px',
-            borderRadius: '4px',
+            borderRadius: '3px',
             opacity: 0.85,
           }}
         >
@@ -212,23 +237,43 @@ function KanbanCard({ app, onClick }: { app: Application; onClick: () => void })
         </span>
       </div>
 
-      {/* Apply button */}
+      {/* Apply + Process buttons */}
       {app.apply_url && (
-        <a
-          href={app.apply_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={e => e.stopPropagation()}
-          style={{
-            display: 'inline-block',
-            color: '#E84A1C',
-            fontSize: '12px',
-            fontWeight: 600,
-            marginBottom: app.manual_action ? '4px' : '0',
-          }}
-        >
-          Apply →
-        </a>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: app.manual_action ? '4px' : '0' }}>
+          <a
+            href={app.apply_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}
+            style={{
+              color: '#E84A1C',
+              fontSize: '12px',
+              fontWeight: 600,
+              letterSpacing: '0.05em',
+            }}
+          >
+            Apply →
+          </a>
+          {app.status === 'cv_ready' && onProcess && (
+            <button
+              onClick={e => { e.stopPropagation(); onProcess(app) }}
+              style={{
+                backgroundColor: '#185FA5',
+                border: 'none',
+                borderRadius: '3px',
+                color: '#F5F0E8',
+                fontSize: '10px',
+                fontWeight: 700,
+                padding: '2px 8px',
+                cursor: 'pointer',
+                letterSpacing: '0.05em',
+                fontFamily: 'Manrope, sans-serif',
+              }}
+            >
+              🚀 Process
+            </button>
+          )}
+        </div>
       )}
 
       {/* Manual action */}
@@ -247,12 +292,14 @@ function KanbanBoard({
   applications,
   loading,
   onSelectApp,
+  onProcessApp,
 }: {
   applications: Application[]
   loading: boolean
   onSelectApp: (app: Application) => void
+  onProcessApp: (app: Application) => void
 }) {
-  const [archiveExpanded, setArchiveExpanded] = useState(false)
+  const [archiveExpanded, setArchiveExpanded] = useState(true)
 
   return (
     <div
@@ -280,8 +327,8 @@ function KanbanBoard({
             {/* Column header */}
             <div
               style={{
-                borderLeft: `3px solid ${col.color}`,
-                paddingLeft: '10px',
+                borderTop: `3px solid ${col.color}`,
+                paddingTop: '10px',
                 marginBottom: '10px',
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -305,7 +352,7 @@ function KanbanBoard({
                   fontSize: '11px',
                   fontWeight: 700,
                   padding: '1px 7px',
-                  borderRadius: '8px',
+                  borderRadius: '3px',
                   opacity: 0.9,
                 }}
               >
@@ -323,7 +370,7 @@ function KanbanBoard({
                     <div
                       style={{
                         border: '1px dashed #2E2C28',
-                        borderRadius: '12px',
+                        borderRadius: '4px',
                         padding: '20px',
                         textAlign: 'center',
                         color: '#5C5A54',
@@ -334,7 +381,7 @@ function KanbanBoard({
                     </div>
                   )
                   : colApps.map(app => (
-                    <KanbanCard key={app.id} app={app} onClick={() => onSelectApp(app)} />
+                    <KanbanCard key={app.id} app={app} onClick={() => onSelectApp(app)} onProcess={onProcessApp} />
                   ))
                 }
               </div>
@@ -344,7 +391,7 @@ function KanbanBoard({
               <div
                 style={{
                   border: '1px dashed #2E2C28',
-                  borderRadius: '12px',
+                  borderRadius: '4px',
                   padding: '12px',
                   textAlign: 'center',
                   color: '#5C5A54',
@@ -375,7 +422,7 @@ function ListView({
   onSelectApp: (app: Application) => void
 }) {
   return (
-    <div style={{ borderRadius: '12px', border: '1px solid #2E2C28', overflowX: 'auto' }}>
+    <div style={{ borderRadius: '4px', border: '1px solid #2E2C28', overflowX: 'auto' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
         <thead>
           <tr style={{ backgroundColor: '#1A1916', borderBottom: '1px solid #2E2C28' }}>
@@ -430,7 +477,7 @@ function ListView({
                 <td style={{ padding: '10px 14px', color: '#9A9488', minWidth: '160px' }}>{app.role}</td>
                 <td style={{ padding: '10px 14px', whiteSpace: 'nowrap' }}>
                   {app.score !== null ? (
-                    <span style={{ backgroundColor: scoreColor(app.score), color: '#F5F0E8', fontSize: '11px', fontWeight: 700, padding: '2px 6px', borderRadius: '6px' }}>
+                    <span style={{ backgroundColor: scoreColor(app.score), color: '#F5F0E8', fontSize: '11px', fontWeight: 700, padding: '2px 6px', borderRadius: '3px' }}>
                       {app.score}
                     </span>
                   ) : <span style={{ color: '#5C5A54' }}>—</span>}
@@ -464,6 +511,390 @@ function ListView({
   )
 }
 
+// ─── QuickApplyBlock ──────────────────────────────────────────────────────────
+
+const PROFILE_FIELDS = [
+  { label: 'Full Name',        value: 'Renato Kialka' },
+  { label: 'Email',            value: 'renato@kialka.com.br' },
+  { label: 'Phone',            value: '+55 11 98993-6304' },
+  { label: 'LinkedIn',         value: 'https://linkedin.com/in/rkialka' },
+  { label: 'Location',         value: 'São Paulo, SP, Brasil' },
+  { label: 'Current Company',  value: 'Patagon AI' },
+  { label: 'Current Title',    value: 'Head of Sales & Country Manager Brazil' },
+  { label: 'Experience',       value: '17+ years' },
+  { label: 'Salary (BRL)',     value: 'R$ 30.000' },
+  { label: 'Salary (USD)',     value: 'USD 100,000 / year' },
+  { label: 'Graduation Year',  value: '2006' },
+]
+
+function CopyField({ label, value }: { label: string; value: string }) {
+  const [copied, setCopied] = useState(false)
+  const copy = () => {
+    navigator.clipboard.writeText(value)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', padding: '7px 0', borderBottom: '1px solid #2E2C28' }}>
+      <div style={{ minWidth: 0 }}>
+        <p style={{ color: '#5C5A54', fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1px' }}>{label}</p>
+        <p style={{ color: '#F5F0E8', fontSize: '13px', wordBreak: 'break-all' }}>{value}</p>
+      </div>
+      <button
+        onClick={copy}
+        style={{
+          flexShrink: 0,
+          backgroundColor: copied ? '#3B6D11' : '#2E2C28',
+          color: copied ? '#F5F0E8' : '#9A9488',
+          border: 'none',
+          borderRadius: '3px',
+          padding: '4px 10px',
+          fontSize: '11px',
+          fontWeight: 600,
+          cursor: 'pointer',
+          transition: 'background-color 0.15s',
+        }}
+      >
+        {copied ? '✓' : 'Copy'}
+      </button>
+    </div>
+  )
+}
+
+function generateFillPrompt(app: Application): string {
+  const cvPath = app.cv_file
+    ? `~/Desktop/job-hunter-cowork/cvs/${app.cv_file}`
+    : '(no CV file specified)'
+
+  const atsHint = app.ats
+    ? `The form uses ${app.ats} as the ATS.`
+    : 'The ATS is not specified.'
+
+  return `You are helping me fill out a job application form. Please navigate to the following URL and fill every visible field using the data below. If a field is not listed, leave it blank or choose the most appropriate option.
+
+URL: ${app.apply_url ?? '(no URL)'}
+
+CANDIDATE DATA:
+- Full Name: Renato Kialka
+- Email: renato@kialka.com.br
+- Phone: +55 11 98993-6304
+- LinkedIn: https://linkedin.com/in/rkialka
+- Location / City: São Paulo, SP, Brasil
+- Current Company: Patagon AI
+- Current Title: Head of Sales & Country Manager Brazil
+- Years of Experience: 17+
+- Graduation Year: 2006
+- Salary Expectation (BRL): R$ 30.000
+- Salary Expectation (USD): USD 100,000 / year
+
+CV / RESUME FILE:
+${cvPath}
+(Attach this file to the resume upload field if there is one)
+
+APPLICATION CONTEXT:
+- Company: ${app.company}
+- Role: ${app.role}
+- ${atsHint}
+${app.notes ? `- Notes: ${app.notes}` : ''}
+
+INSTRUCTIONS:
+1. Open the URL above.
+2. Read all visible form fields on the page.
+3. Fill each one using the candidate data above — match field labels to the right value.
+4. For dropdowns, select the closest matching option.
+5. For the resume/CV upload field, use the file path provided.
+6. Do NOT submit the form — stop after filling all fields and wait for my confirmation.
+7. If you find fields that are not covered by the data above (e.g. cover letter, portfolio, custom questions), flag them so I can answer them manually.`
+}
+
+function PromptModal({ prompt, onClose }: { prompt: string; onClose: () => void }) {
+  const [copied, setCopied] = useState(false)
+  const copy = () => {
+    navigator.clipboard.writeText(prompt)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(14,12,8,0.85)',
+        zIndex: 200,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          backgroundColor: '#1A1916',
+          border: '1px solid #2E2C28',
+          borderRadius: '4px',
+          width: '100%',
+          maxWidth: '640px',
+          maxHeight: '80vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid #2E2C28', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ color: '#F5F0E8', fontWeight: 700, fontSize: '14px' }}>🤖 Claude Chrome Extension Prompt</span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#5C5A54', fontSize: '18px', cursor: 'pointer', lineHeight: 1 }}>✕</button>
+        </div>
+
+        {/* Instructions */}
+        <div style={{ padding: '12px 20px', backgroundColor: 'rgba(232,74,28,0.06)', borderBottom: '1px solid #2E2C28' }}>
+          <p style={{ color: '#9A9488', fontSize: '12px', lineHeight: 1.5 }}>
+            Copy this prompt → open the Claude Chrome Extension (or Cowork) → paste and run. Claude will fill the form for you.
+          </p>
+        </div>
+
+        {/* Prompt text */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
+          <pre
+            style={{
+              color: '#F5F0E8',
+              fontSize: '12px',
+              lineHeight: 1.6,
+              fontFamily: 'monospace',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-word',
+              margin: 0,
+            }}
+          >
+            {prompt}
+          </pre>
+        </div>
+
+        {/* Footer */}
+        <div style={{ padding: '14px 20px', borderTop: '1px solid #2E2C28', display: 'flex', gap: '10px' }}>
+          <button
+            onClick={copy}
+            style={{
+              flex: 1,
+              backgroundColor: copied ? '#3B6D11' : '#E84A1C',
+              color: '#F5F0E8',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '10px',
+              fontSize: '13px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'background-color 0.2s',
+            }}
+          >
+            {copied ? '✓ Copied to clipboard!' : 'Copy Prompt'}
+          </button>
+          <button
+            onClick={onClose}
+            style={{
+              backgroundColor: '#2E2C28',
+              color: '#9A9488',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '10px 16px',
+              fontSize: '13px',
+              cursor: 'pointer',
+            }}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function QuickApplyBlock({ app, onMarkApplied, onTriggerPrep }: { app: Application; onMarkApplied: () => void; onTriggerPrep?: (app: Application) => void }) {
+  const [open, setOpen] = useState(true)
+  const [showPrompt, setShowPrompt] = useState(false)
+
+  const handleGeneratePrompt = () => {
+    const prompt = generateFillPrompt(app)
+    navigator.clipboard.writeText(prompt).catch(() => {})
+    setShowPrompt(true)
+  }
+
+  return (
+    <>
+    {showPrompt && (
+      <PromptModal prompt={generateFillPrompt(app)} onClose={() => setShowPrompt(false)} />
+    )}
+    <div
+      style={{
+        border: '1px solid #E84A1C',
+        borderRadius: '4px',
+        marginBottom: '20px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          backgroundColor: 'rgba(232,74,28,0.08)',
+          padding: '12px 14px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          cursor: 'pointer',
+        }}
+        onClick={() => setOpen(v => !v)}
+      >
+        <span style={{ color: '#E84A1C', fontSize: '13px', fontWeight: 700, fontFamily: 'Manrope, sans-serif' }}>
+          ⚡ Quick Apply
+        </span>
+        <span style={{ color: '#5C5A54', fontSize: '12px' }}>{open ? '▲' : '▼'}</span>
+      </div>
+
+      {open && (
+        <div style={{ padding: '12px 14px', backgroundColor: '#0E0C08' }}>
+
+          {/* Open button */}
+          {app.apply_url && (
+            <a
+              href={app.apply_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'block',
+                backgroundColor: '#E84A1C',
+                color: '#F5F0E8',
+                textAlign: 'center',
+                borderRadius: '4px',
+                padding: '11px',
+                fontSize: '14px',
+                fontWeight: 700,
+                textDecoration: 'none',
+                marginBottom: '14px',
+              }}
+            >
+              Open Application Form →
+            </a>
+          )}
+
+          {/* CV file */}
+          {app.cv_file && (
+            <div
+              style={{
+                backgroundColor: '#1A1916',
+                border: '1px solid #2E2C28',
+                borderRadius: '4px',
+                padding: '10px 12px',
+                marginBottom: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '8px',
+              }}
+            >
+              <div>
+                <p style={{ color: '#5C5A54', fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '2px' }}>CV to attach</p>
+                <p style={{ color: '#F5F0E8', fontSize: '12px', fontFamily: 'monospace', wordBreak: 'break-all' }}>{app.cv_file}</p>
+                <p style={{ color: '#5C5A54', fontSize: '11px', marginTop: '2px' }}>Desktop/job-hunter-cowork/cvs/</p>
+              </div>
+              <button
+                onClick={() => navigator.clipboard.writeText(app.cv_file!)}
+                style={{ flexShrink: 0, backgroundColor: '#2E2C28', color: '#9A9488', border: 'none', borderRadius: '3px', padding: '4px 10px', fontSize: '11px', cursor: 'pointer' }}
+              >
+                Copy
+              </button>
+            </div>
+          )}
+
+          {/* ATS hint */}
+          {app.ats && (
+            <p style={{ color: '#BA7517', fontSize: '12px', marginBottom: '12px', padding: '8px 10px', backgroundColor: 'rgba(186,117,23,0.08)', borderRadius: '3px' }}>
+              📋 <strong>ATS:</strong> {app.ats}
+            </p>
+          )}
+
+          {/* Profile fields */}
+          <p style={{ color: '#5C5A54', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>
+            Profile — click Copy next to each field
+          </p>
+          {PROFILE_FIELDS.map(f => (
+            <CopyField key={f.label} label={f.label} value={f.value} />
+          ))}
+
+          {/* Generate prompt button */}
+          {app.apply_url && (
+            <button
+              onClick={handleGeneratePrompt}
+              style={{
+                marginTop: '12px',
+                width: '100%',
+                backgroundColor: 'rgba(232,74,28,0.1)',
+                color: '#E84A1C',
+                border: '1px solid rgba(232,74,28,0.35)',
+                borderRadius: '4px',
+                padding: '10px',
+                fontSize: '13px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'background-color 0.15s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(232,74,28,0.18)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(232,74,28,0.1)' }}
+            >
+              🤖 Generate Fill Prompt (Chrome Extension)
+            </button>
+          )}
+
+          {/* Mark as applied */}
+          <button
+            onClick={onMarkApplied}
+            style={{
+              marginTop: '10px',
+              width: '100%',
+              backgroundColor: '#3B6D11',
+              color: '#F5F0E8',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '10px',
+              fontSize: '13px',
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
+          >
+            ✓ Mark as Applied
+          </button>
+
+          {/* Interview Prep */}
+          {onTriggerPrep && (
+            <button
+              onClick={() => onTriggerPrep(app)}
+              style={{
+                marginTop: '8px',
+                width: '100%',
+                backgroundColor: 'rgba(24,95,165,0.12)',
+                color: '#185FA5',
+                border: '1px solid rgba(24,95,165,0.35)',
+                borderRadius: '4px',
+                padding: '9px',
+                fontSize: '12px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'background-color 0.15s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(24,95,165,0.22)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(24,95,165,0.12)' }}
+            >
+              🎯 Prep
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+    </>
+  )
+}
+
 // ─── DetailPanel ──────────────────────────────────────────────────────────────
 
 function DetailPanel({
@@ -471,14 +902,19 @@ function DetailPanel({
   onClose,
   onUpdate,
   onDelete,
+  onTriggerPrep,
 }: {
   app: Application | null
   onClose: () => void
   onUpdate: (id: string, fields: Partial<Application>) => Promise<void>
   onDelete: (id: string) => Promise<void>
+  onTriggerPrep?: (app: Application) => void
 }) {
   const [events, setEvents] = useState<JhEvent[]>([])
   const [notesValue, setNotesValue] = useState('')
+  const [candidateNotesValue, setCandidateNotesValue] = useState('')
+  const [candidateNotesEditing, setCandidateNotesEditing] = useState(false)
+  const [savingCandidateNotes, setSavingCandidateNotes] = useState(false)
   const [statusValue, setStatusValue] = useState<ApplicationStatus>('cv_ready')
   const [savingNotes, setSavingNotes] = useState(false)
   const [savingStatus, setSavingStatus] = useState(false)
@@ -487,6 +923,8 @@ function DetailPanel({
   useEffect(() => {
     if (!app) return
     setNotesValue(app.notes ?? '')
+    setCandidateNotesValue(app.candidate_notes ?? '')
+    setCandidateNotesEditing(false)
     setStatusValue(app.status)
     setLoadingEvents(true)
     fetch(`/api/jobhunting/applications/${app.id}/events`)
@@ -510,6 +948,14 @@ function DetailPanel({
     setSavingNotes(false)
   }
 
+  const handleSaveCandidateNotes = async () => {
+    if (!app) return
+    setSavingCandidateNotes(true)
+    await onUpdate(app.id, { candidate_notes: candidateNotesValue })
+    setSavingCandidateNotes(false)
+    setCandidateNotesEditing(false)
+  }
+
   const handleMarkAsDone = async () => {
     if (!app) return
     await onUpdate(app.id, { status: 'applied', manual_action: null })
@@ -518,7 +964,7 @@ function DetailPanel({
 
   const handleMarkClosed = async () => {
     if (!app) return
-    if (!confirm(`Mark "${app.company}" as Closed?`)) return
+    if (!confirm(`Move "${app.company}" to Archive?`)) return
     await onUpdate(app.id, { status: 'closed' })
     setStatusValue('closed')
     onClose()
@@ -565,6 +1011,7 @@ function DetailPanel({
           transition: 'transform 0.25s cubic-bezier(0.4,0,0.2,1)',
           display: 'flex',
           flexDirection: 'column',
+          fontFamily: 'Manrope, sans-serif',
         }}
       >
         {app && (
@@ -593,23 +1040,23 @@ function DetailPanel({
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '6px', alignItems: 'center' }}>
                 {app.priority && <span style={{ fontSize: '18px' }}>🔥</span>}
                 {app.score !== null && (
-                  <span style={{ backgroundColor: scoreColor(app.score), color: '#F5F0E8', fontSize: '12px', fontWeight: 700, padding: '2px 8px', borderRadius: '6px' }}>
+                  <span style={{ backgroundColor: scoreColor(app.score), color: '#F5F0E8', fontSize: '12px', fontWeight: 700, padding: '2px 8px', borderRadius: '3px' }}>
                     {app.score}/20
                   </span>
                 )}
                 {app.track && (
-                  <span style={{ backgroundColor: '#2E2C28', color: '#9A9488', fontSize: '11px', fontWeight: 600, padding: '2px 8px', borderRadius: '6px' }}>
+                  <span style={{ backgroundColor: '#2E2C28', color: '#9A9488', fontSize: '11px', fontWeight: 600, padding: '2px 8px', borderRadius: '3px' }}>
                     Track {app.track}
                   </span>
                 )}
               </div>
-              <h2 style={{ color: '#F5F0E8', fontSize: '20px', fontWeight: 700, marginBottom: '4px' }}>{app.company}</h2>
+              <h2 style={{ color: '#F5F0E8', fontSize: '20px', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: '4px' }}>{app.company}</h2>
               <p style={{ color: '#9A9488', fontSize: '14px' }}>{app.role}</p>
             </div>
 
             {/* Status */}
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ color: '#5C5A54', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '6px' }}>
+              <label style={{ color: '#5C5A54', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', display: 'block', marginBottom: '6px' }}>
                 Status {savingStatus && <span style={{ color: '#BA7517' }}>saving…</span>}
               </label>
               <select
@@ -618,7 +1065,7 @@ function DetailPanel({
                 style={{
                   backgroundColor: '#0E0C08',
                   border: '1px solid #2E2C28',
-                  borderRadius: '8px',
+                  borderRadius: '4px',
                   color: '#F5F0E8',
                   padding: '8px 12px',
                   fontSize: '13px',
@@ -639,7 +1086,7 @@ function DetailPanel({
                 style={{
                   backgroundColor: 'rgba(186,117,23,0.1)',
                   border: '1px solid #BA7517',
-                  borderRadius: '10px',
+                  borderRadius: '4px',
                   padding: '14px',
                   marginBottom: '20px',
                 }}
@@ -652,7 +1099,7 @@ function DetailPanel({
                     backgroundColor: '#3B6D11',
                     color: '#F5F0E8',
                     border: 'none',
-                    borderRadius: '8px',
+                    borderRadius: '4px',
                     padding: '8px 16px',
                     fontSize: '12px',
                     fontWeight: 600,
@@ -664,8 +1111,13 @@ function DetailPanel({
               </div>
             )}
 
-            {/* Apply URL */}
-            {app.apply_url && (
+            {/* Quick Apply block — only for cv_ready / action_needed */}
+            {(app.status === 'cv_ready' || app.status === 'action_needed') && (
+              <QuickApplyBlock app={app} onMarkApplied={handleMarkAsDone} onTriggerPrep={onTriggerPrep} />
+            )}
+
+            {/* Apply URL — other statuses */}
+            {app.apply_url && app.status !== 'cv_ready' && app.status !== 'action_needed' && (
               <div style={{ marginBottom: '20px' }}>
                 <a
                   href={app.apply_url}
@@ -676,7 +1128,7 @@ function DetailPanel({
                     backgroundColor: '#E84A1C',
                     color: '#F5F0E8',
                     textAlign: 'center',
-                    borderRadius: '10px',
+                    borderRadius: '4px',
                     padding: '12px',
                     fontSize: '14px',
                     fontWeight: 700,
@@ -697,7 +1149,7 @@ function DetailPanel({
                 marginBottom: '20px',
                 padding: '14px',
                 backgroundColor: '#0E0C08',
-                borderRadius: '10px',
+                borderRadius: '4px',
                 border: '1px solid #2E2C28',
               }}
             >
@@ -708,15 +1160,159 @@ function DetailPanel({
                 { label: 'Track', value: app.track },
               ].map(item => (
                 <div key={item.label}>
-                  <p style={{ color: '#5C5A54', fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '3px' }}>{item.label}</p>
+                  <p style={{ color: '#5C5A54', fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '3px' }}>{item.label}</p>
                   <p style={{ color: '#9A9488', fontSize: '12px', wordBreak: 'break-word' }}>{item.value || '—'}</p>
                 </div>
               ))}
             </div>
 
+            {/* Minhas anotações — only for active/pipeline statuses */}
+            {!['cv_ready', 'closed', 'skip'].includes(app.status) && (
+              <div style={{
+                marginBottom: '20px',
+                backgroundColor: '#0E0C08',
+                border: '1px solid #2E2C28',
+                borderRadius: '4px',
+                overflow: 'hidden',
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '10px 14px',
+                  borderBottom: candidateNotesEditing || candidateNotesValue ? '1px solid #2E2C28' : 'none',
+                }}>
+                  <span style={{ color: '#9A9488', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                    ✏️ Minhas anotações
+                  </span>
+                  {!candidateNotesEditing && (
+                    <button
+                      onClick={() => setCandidateNotesEditing(true)}
+                      style={{
+                        background: 'none',
+                        border: '1px solid #2E2C28',
+                        borderRadius: '3px',
+                        color: '#9A9488',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        padding: '3px 10px',
+                        cursor: 'pointer',
+                        fontFamily: 'Manrope, sans-serif',
+                      }}
+                    >
+                      {candidateNotesValue ? 'Editar' : '+ Adicionar'}
+                    </button>
+                  )}
+                </div>
+
+                {/* Read mode */}
+                {!candidateNotesEditing && candidateNotesValue && (
+                  <p style={{
+                    padding: '12px 14px',
+                    color: '#F5F0E8',
+                    fontSize: '13px',
+                    lineHeight: 1.6,
+                    whiteSpace: 'pre-wrap',
+                    margin: 0,
+                  }}>
+                    {candidateNotesValue}
+                  </p>
+                )}
+
+                {/* Edit mode */}
+                {candidateNotesEditing && (
+                  <div style={{ padding: '12px 14px' }}>
+                    <textarea
+                      value={candidateNotesValue}
+                      onChange={e => setCandidateNotesValue(e.target.value)}
+                      rows={5}
+                      autoFocus
+                      placeholder="Como foi o processo? O que perguntaram? Próximos passos..."
+                      style={{
+                        width: '100%',
+                        backgroundColor: '#1A1916',
+                        border: '1px solid #2E2C28',
+                        borderRadius: '3px',
+                        color: '#F5F0E8',
+                        padding: '10px 12px',
+                        fontSize: '13px',
+                        resize: 'vertical',
+                        outline: 'none',
+                        lineHeight: 1.6,
+                        boxSizing: 'border-box',
+                        fontFamily: 'Manrope, sans-serif',
+                      }}
+                      onFocus={e => (e.target.style.borderColor = 'rgba(232,74,28,0.4)')}
+                      onBlur={e => (e.target.style.borderColor = '#2E2C28')}
+                    />
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                      <button
+                        onClick={handleSaveCandidateNotes}
+                        disabled={savingCandidateNotes}
+                        style={{
+                          backgroundColor: '#E84A1C',
+                          color: '#F5F0E8',
+                          border: 'none',
+                          borderRadius: '3px',
+                          padding: '7px 18px',
+                          fontSize: '12px',
+                          fontWeight: 700,
+                          cursor: savingCandidateNotes ? 'not-allowed' : 'pointer',
+                          opacity: savingCandidateNotes ? 0.6 : 1,
+                          fontFamily: 'Manrope, sans-serif',
+                        }}
+                      >
+                        {savingCandidateNotes ? 'Salvando…' : 'Salvar'}
+                      </button>
+                      <button
+                        onClick={() => { setCandidateNotesEditing(false); setCandidateNotesValue(app.candidate_notes ?? '') }}
+                        style={{
+                          background: 'none',
+                          border: '1px solid #2E2C28',
+                          borderRadius: '3px',
+                          color: '#9A9488',
+                          fontSize: '12px',
+                          padding: '7px 14px',
+                          cursor: 'pointer',
+                          fontFamily: 'Manrope, sans-serif',
+                        }}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Application Q&A — registered by Cowork during processing */}
+            {app.application_qa && app.application_qa.length > 0 && (
+              <div style={{ marginBottom: '20px', backgroundColor: '#0E0C08', border: '1px solid #2E2C28', borderRadius: '4px', overflow: 'hidden' }}>
+                <div style={{ padding: '10px 14px', borderBottom: '1px solid #2E2C28', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ color: '#9A9488', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+                    📋 Form Q&A
+                  </span>
+                  <span style={{ color: '#5C5A54', fontSize: '11px' }}>
+                    {app.application_qa.length} {app.application_qa.length === 1 ? 'question' : 'questions'}
+                  </span>
+                </div>
+                <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {app.application_qa.map((qa, i) => (
+                    <div key={i} style={{ borderLeft: '2px solid #2E2C28', paddingLeft: '10px' }}>
+                      <p style={{ color: '#5C5A54', fontSize: '11px', fontWeight: 600, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Q{i + 1}{qa.source ? ` · ${qa.source}` : ''}
+                      </p>
+                      <p style={{ color: '#9A9488', fontSize: '12px', marginBottom: '6px', lineHeight: 1.5 }}>{qa.question}</p>
+                      <p style={{ color: '#F5F0E8', fontSize: '13px', lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>{qa.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Notes */}
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ color: '#5C5A54', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '6px' }}>
+              <label style={{ color: '#5C5A54', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', display: 'block', marginBottom: '6px' }}>
                 Notes
               </label>
               <textarea
@@ -727,7 +1323,7 @@ function DetailPanel({
                   width: '100%',
                   backgroundColor: '#0E0C08',
                   border: '1px solid #2E2C28',
-                  borderRadius: '8px',
+                  borderRadius: '4px',
                   color: '#F5F0E8',
                   padding: '10px 12px',
                   fontSize: '13px',
@@ -746,7 +1342,7 @@ function DetailPanel({
                   backgroundColor: '#2E2C28',
                   color: '#F5F0E8',
                   border: 'none',
-                  borderRadius: '8px',
+                  borderRadius: '4px',
                   padding: '8px 16px',
                   fontSize: '12px',
                   fontWeight: 600,
@@ -760,7 +1356,7 @@ function DetailPanel({
 
             {/* Timeline */}
             <div style={{ marginBottom: '24px' }}>
-              <p style={{ color: '#5C5A54', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
+              <p style={{ color: '#5C5A54', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '10px' }}>
                 Timeline
               </p>
               {loadingEvents ? (
@@ -775,7 +1371,7 @@ function DetailPanel({
                       style={{
                         padding: '10px 12px',
                         backgroundColor: '#0E0C08',
-                        borderRadius: '8px',
+                        borderRadius: '4px',
                         border: '1px solid #2E2C28',
                       }}
                     >
@@ -795,14 +1391,14 @@ function DetailPanel({
                   backgroundColor: 'transparent',
                   color: '#A32D2D',
                   border: '1px solid #A32D2D',
-                  borderRadius: '8px',
+                  borderRadius: '4px',
                   padding: '8px 14px',
                   fontSize: '12px',
                   fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
-                Mark as Closed
+                📦 Move to Archive
               </button>
               <button
                 onClick={handleDelete}
@@ -810,7 +1406,7 @@ function DetailPanel({
                   backgroundColor: 'transparent',
                   color: '#5C5A54',
                   border: '1px solid #2E2C28',
-                  borderRadius: '8px',
+                  borderRadius: '4px',
                   padding: '8px 14px',
                   fontSize: '12px',
                   cursor: 'pointer',
@@ -864,6 +1460,8 @@ function AddApplicationModal({
       apply_url: form.apply_url || null,
       cv_file: form.cv_file || null,
       notes: form.notes || null,
+      candidate_notes: null,
+      application_qa: null,
       manual_action: form.manual_action || null,
       applied_at: form.applied_at || null,
       priority: form.priority,
@@ -877,7 +1475,7 @@ function AddApplicationModal({
     width: '100%',
     backgroundColor: '#0E0C08',
     border: '1px solid #2E2C28',
-    borderRadius: '8px',
+    borderRadius: '4px',
     color: '#F5F0E8',
     padding: '8px 12px',
     fontSize: '13px',
@@ -913,7 +1511,7 @@ function AddApplicationModal({
         style={{
           backgroundColor: '#1A1916',
           border: '1px solid #2E2C28',
-          borderRadius: '12px',
+          borderRadius: '4px',
           padding: '24px',
           width: '100%',
           maxWidth: '520px',
@@ -981,10 +1579,10 @@ function AddApplicationModal({
           </div>
 
           <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
-            <button type="button" onClick={onClose} style={{ backgroundColor: '#2E2C28', color: '#9A9488', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '13px', cursor: 'pointer' }}>
+            <button type="button" onClick={onClose} style={{ backgroundColor: '#2E2C28', color: '#9A9488', border: 'none', borderRadius: '4px', padding: '10px 20px', fontSize: '13px', cursor: 'pointer' }}>
               Cancel
             </button>
-            <button type="submit" disabled={saving} style={{ backgroundColor: '#E84A1C', color: '#F5F0E8', border: 'none', borderRadius: '8px', padding: '10px 20px', fontSize: '13px', fontWeight: 600, cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}>
+            <button type="submit" disabled={saving} style={{ backgroundColor: '#E84A1C', color: '#F5F0E8', border: 'none', borderRadius: '4px', padding: '10px 20px', fontSize: '13px', fontWeight: 600, cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}>
               {saving ? 'Adding…' : 'Add Application'}
             </button>
           </div>
@@ -1018,7 +1616,7 @@ function DailyLogSection({ logs, loading }: { logs: DailyLog[]; loading: boolean
       {loading ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '12px' }}>
           {[1, 2, 3].map(i => (
-            <div key={i} style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '12px', padding: '16px' }}>
+            <div key={i} style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '4px', padding: '16px' }}>
               <div style={{ height: '12px', backgroundColor: '#2E2C28', borderRadius: '4px', marginBottom: '8px', animation: 'pulse 1.5s ease-in-out infinite' }} />
               <div style={{ height: '12px', backgroundColor: '#2E2C28', borderRadius: '4px', width: '80%', animation: 'pulse 1.5s ease-in-out infinite' }} />
             </div>
@@ -1033,7 +1631,7 @@ function DailyLogSection({ logs, loading }: { logs: DailyLog[]; loading: boolean
               style={{
                 backgroundColor: '#1A1916',
                 border: '1px solid #2E2C28',
-                borderRadius: '12px',
+                borderRadius: '4px',
                 padding: '16px',
                 cursor: 'pointer',
                 transition: 'border-color 0.15s',
@@ -1067,7 +1665,7 @@ function DailyLogSection({ logs, loading }: { logs: DailyLog[]; loading: boolean
           marginTop: '20px',
           backgroundColor: '#0E0C08',
           border: '1px solid #2E2C28',
-          borderRadius: '10px',
+          borderRadius: '4px',
           padding: '14px 16px',
           fontFamily: 'monospace',
         }}
@@ -1079,6 +1677,200 @@ function DailyLogSection({ logs, loading }: { logs: DailyLog[]; loading: boolean
           Body: {'{ session_date, session_name, summary, details, applications_count, source: "cowork" }'}
         </p>
       </div>
+    </div>
+  )
+}
+
+// ─── CommandCenter ────────────────────────────────────────────────────────────
+
+type CommandType = 'new_search' | 'email_check' | 'weekly_review' | 'interview_prep' | 'sync' | 'process_applications'
+type CommandStatus = 'pending' | 'running' | 'done' | 'error'
+
+type JhCommand = {
+  id: string
+  created_at: string
+  command_type: CommandType
+  status: CommandStatus
+  payload: Record<string, string> | null
+  result: string | null
+  triggered_by: 'website' | 'cowork' | 'manual'
+}
+
+const COMMAND_LABELS: Record<CommandType, string> = {
+  new_search: 'Search Jobs',
+  email_check: 'Email Check',
+  weekly_review: 'Weekly Review',
+  interview_prep: 'Interview Prep',
+  sync: 'Sync Tracker',
+  process_applications: 'Process Pending',
+}
+
+const COMMAND_ICONS: Record<CommandType, string> = {
+  new_search: '🔍',
+  email_check: '📧',
+  weekly_review: '📊',
+  interview_prep: '🎯',
+  sync: '🔄',
+  process_applications: '🚀',
+}
+
+const COMMAND_STATUS_COLORS: Record<CommandStatus, string> = {
+  pending: '#BA7517',
+  running: '#185FA5',
+  done: '#3B6D11',
+  error: '#A32D2D',
+}
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 1) return 'just now'
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  return `${Math.floor(hrs / 24)}d ago`
+}
+
+function CommandCenter({ onTrigger }: { onTrigger: (type: CommandType, payload?: Record<string, string>) => Promise<void> }) {
+  const [commands, setCommands] = useState<JhCommand[]>([])
+  const [triggering, setTriggering] = useState<CommandType | null>(null)
+
+  const fetchCommands = useCallback(async () => {
+    try {
+      const res = await fetch('/api/jobhunting/commands')
+      const json = await res.json()
+      setCommands((json.data ?? []).slice(0, 5))
+    } catch {
+      // silently fail
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchCommands()
+  }, [fetchCommands])
+
+  // Auto-refresh every 15s when there are pending/running commands
+  useEffect(() => {
+    const hasPendingOrRunning = commands.some(c => c.status === 'pending' || c.status === 'running')
+    if (!hasPendingOrRunning) return
+    const id = setInterval(fetchCommands, 15000)
+    return () => clearInterval(id)
+  }, [commands, fetchCommands])
+
+  const handleTrigger = async (type: CommandType) => {
+    setTriggering(type)
+    try {
+      await onTrigger(type)
+      await fetchCommands()
+    } finally {
+      setTriggering(null)
+    }
+  }
+
+  const TRIGGER_BUTTONS: { type: CommandType }[] = [
+    { type: 'email_check' },
+    { type: 'weekly_review' },
+    { type: 'sync' },
+  ]
+
+  return (
+    <div
+      style={{
+        backgroundColor: '#1A1916',
+        border: '1px solid #2E2C28',
+        borderRadius: '3px',
+        padding: '14px 16px',
+        marginBottom: '24px',
+        fontFamily: 'Manrope, sans-serif',
+      }}
+    >
+      {/* Header row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
+        <span style={{ color: '#F5F0E8', fontSize: '13px', fontWeight: 700, letterSpacing: '-0.01em' }}>
+          ⚡ Command Center
+        </span>
+        {/* Trigger buttons */}
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          {TRIGGER_BUTTONS.map(({ type }) => (
+            <button
+              key={type}
+              onClick={() => handleTrigger(type)}
+              disabled={triggering === type}
+              style={{
+                border: '1px solid #2E2C28',
+                backgroundColor: '#1A1916',
+                color: triggering === type ? '#5C5A54' : '#9A9488',
+                padding: '7px 12px',
+                fontSize: '12px',
+                borderRadius: '3px',
+                cursor: triggering === type ? 'not-allowed' : 'pointer',
+                fontFamily: 'Manrope, sans-serif',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                transition: 'color 0.15s, border-color 0.15s',
+              }}
+              onMouseEnter={e => {
+                if (triggering !== type) {
+                  (e.currentTarget as HTMLButtonElement).style.color = '#F5F0E8'
+                  ;(e.currentTarget as HTMLButtonElement).style.borderColor = '#5C5A54'
+                }
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLButtonElement).style.color = '#9A9488'
+                ;(e.currentTarget as HTMLButtonElement).style.borderColor = '#2E2C28'
+              }}
+            >
+              <span>{COMMAND_ICONS[type]}</span>
+              <span>{triggering === type ? '…' : COMMAND_LABELS[type]}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent commands list */}
+      {commands.length === 0 ? (
+        <p style={{ color: '#5C5A54', fontSize: '12px' }}>No commands yet. Use the buttons above to trigger a Cowork session.</p>
+      ) : (
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {commands.map(cmd => (
+            <div
+              key={cmd.id}
+              style={{
+                backgroundColor: '#0E0C08',
+                border: '1px solid #2E2C28',
+                borderRadius: '3px',
+                padding: '7px 10px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '7px',
+                minWidth: 0,
+              }}
+            >
+              <span style={{ fontSize: '14px', flexShrink: 0 }}>{COMMAND_ICONS[cmd.command_type]}</span>
+              <span style={{ color: '#F5F0E8', fontSize: '12px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                {COMMAND_LABELS[cmd.command_type]}
+              </span>
+              <span
+                style={{
+                  backgroundColor: COMMAND_STATUS_COLORS[cmd.status],
+                  color: '#F5F0E8',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  padding: '1px 6px',
+                  borderRadius: '3px',
+                  flexShrink: 0,
+                }}
+              >
+                {cmd.status}
+              </span>
+              <span style={{ color: '#5C5A54', fontSize: '11px', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                {timeAgo(cmd.created_at)}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -1150,6 +1942,17 @@ export default function JobHuntingDashboard() {
   }, [fetchAll])
 
   const handleAdd = useCallback(async (fields: Omit<Application, 'id' | 'created_at' | 'updated_at'>) => {
+    // Deduplication: warn if same company+role already exists
+    const duplicate = applications.find(
+      a => a.company.trim().toLowerCase() === fields.company.trim().toLowerCase() &&
+           a.role.trim().toLowerCase() === fields.role.trim().toLowerCase()
+    )
+    if (duplicate) {
+      const confirm = window.confirm(
+        `"${fields.company} — ${fields.role}" já existe no pipeline (status: ${STATUS_LABELS[duplicate.status]}).\n\nAdicionar mesmo assim?`
+      )
+      if (!confirm) return
+    }
     try {
       const res = await fetch('/api/jobhunting/applications', {
         method: 'POST',
@@ -1161,7 +1964,43 @@ export default function JobHuntingDashboard() {
     } catch (err) {
       console.error('Add failed', err)
     }
-  }, [fetchAll])
+  }, [fetchAll, applications])
+
+  const handleTriggerCommand = useCallback(async (type: CommandType, payload?: Record<string, string>) => {
+    try {
+      await fetch('/api/jobhunting/commands', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer renato360',
+        },
+        body: JSON.stringify({
+          command_type: type,
+          payload: payload ?? null,
+          triggered_by: 'website',
+        }),
+      })
+    } catch (err) {
+      console.error('Trigger command failed', err)
+    }
+  }, [])
+
+  const handleTriggerPrep = useCallback(async (app: Application) => {
+    await handleTriggerCommand('interview_prep', {
+      company: app.company,
+      role: app.role,
+      apply_url: app.apply_url ?? '',
+    })
+  }, [handleTriggerCommand])
+
+  const handleProcessApp = useCallback(async (app: Application) => {
+    await handleTriggerCommand('process_applications', {
+      application_id: app.id,
+      company: app.company,
+      role: app.role,
+      apply_url: app.apply_url ?? '',
+    })
+  }, [handleTriggerCommand])
 
   const stats = {
     total: applications.length,
@@ -1186,18 +2025,18 @@ export default function JobHuntingDashboard() {
         ::-webkit-scrollbar-thumb:hover { background: #5C5A54; }
       `}</style>
 
-      <main style={{ minHeight: '100vh', backgroundColor: '#0E0C08', padding: '24px' }}>
+      <main style={{ minHeight: '100vh', backgroundColor: '#0E0C08', padding: '24px', fontFamily: 'Manrope, sans-serif' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
 
           {/* Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
             <div>
-              <h1 style={{ color: '#F5F0E8', fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>Job Hunt Dashboard</h1>
+              <h1 style={{ color: '#F5F0E8', fontSize: '22px', fontWeight: 800, letterSpacing: '-0.04em', marginBottom: '4px' }}>Job Hunt Dashboard</h1>
               <p style={{ color: '#5C5A54', fontSize: '13px' }}>Renato Kialka — Active Pipeline</p>
             </div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
               {/* View toggle */}
-              <div style={{ display: 'flex', backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '8px', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '4px', overflow: 'hidden' }}>
                 {(['kanban', 'list'] as const).map(v => (
                   <button
                     key={v}
@@ -1206,6 +2045,7 @@ export default function JobHuntingDashboard() {
                       padding: '7px 14px',
                       fontSize: '12px',
                       fontWeight: 600,
+                      letterSpacing: '0.1em',
                       border: 'none',
                       cursor: 'pointer',
                       backgroundColor: view === v ? '#E84A1C' : 'transparent',
@@ -1220,17 +2060,44 @@ export default function JobHuntingDashboard() {
               {/* Refresh */}
               <button
                 onClick={fetchAll}
-                style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '8px', color: '#9A9488', padding: '7px 12px', fontSize: '12px', cursor: 'pointer' }}
+                style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '4px', color: '#9A9488', padding: '7px 12px', fontSize: '12px', cursor: 'pointer', letterSpacing: '0.1em' }}
               >
                 ↻ Refresh
+              </button>
+              {/* Search Jobs */}
+              <button
+                onClick={() => handleTriggerCommand('new_search')}
+                style={{
+                  backgroundColor: '#E84A1C',
+                  border: 'none',
+                  borderRadius: '4px',
+                  color: '#F5F0E8',
+                  padding: '7px 16px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  letterSpacing: '0.1em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontFamily: 'Manrope, sans-serif',
+                }}
+              >
+                🔍 Search Jobs
               </button>
               {/* Add */}
               <button
                 onClick={() => setShowAddModal(true)}
-                style={{ backgroundColor: '#E84A1C', border: 'none', borderRadius: '8px', color: '#F5F0E8', padding: '7px 16px', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}
+                style={{ backgroundColor: '#E84A1C', border: 'none', borderRadius: '4px', color: '#F5F0E8', padding: '7px 16px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', letterSpacing: '0.1em' }}
               >
                 + Add
               </button>
+              <Link href="/jobhunting/cv" style={{ color: '#9A9488', fontSize: '12px', letterSpacing: '0.05em' }}>CV</Link>
+              <Link href="/jobhunting/strategy" style={{ color: '#9A9488', fontSize: '12px', letterSpacing: '0.05em' }}>Strategy</Link>
+              <Link href="/jobhunting/feedback" style={{ color: '#9A9488', fontSize: '12px', letterSpacing: '0.05em' }}>Feedback</Link>
+              <Link href="/jobhunting/context" style={{ color: '#9A9488', fontSize: '12px', letterSpacing: '0.05em' }}>Notes</Link>
+              <Link href="/jobhunting/intelligence" style={{ color: '#9A9488', fontSize: '12px', letterSpacing: '0.05em' }}>Intelligence</Link>
+              <Link href="/jobhunting/analytics" style={{ color: '#9A9488', fontSize: '12px', letterSpacing: '0.05em' }}>Analytics</Link>
               <Link href="/" style={{ color: '#5C5A54', fontSize: '12px' }}>← Home</Link>
             </div>
           </div>
@@ -1251,7 +2118,7 @@ export default function JobHuntingDashboard() {
                   backgroundColor: '#1A1916',
                   border: '1px solid #2E2C28',
                   borderTop: `3px solid ${s.color}`,
-                  borderRadius: '12px',
+                  borderRadius: '3px',
                   padding: '14px',
                 }}
               >
@@ -1261,9 +2128,12 @@ export default function JobHuntingDashboard() {
             ))}
           </div>
 
+          {/* Command Center */}
+          <CommandCenter onTrigger={handleTriggerCommand} />
+
           {/* Board */}
           {view === 'kanban' ? (
-            <KanbanBoard applications={applications} loading={loading} onSelectApp={setSelectedApp} />
+            <KanbanBoard applications={applications} loading={loading} onSelectApp={setSelectedApp} onProcessApp={handleProcessApp} />
           ) : (
             <ListView applications={applications} loading={loading} onSelectApp={setSelectedApp} />
           )}
@@ -1279,6 +2149,7 @@ export default function JobHuntingDashboard() {
         onClose={() => setSelectedApp(null)}
         onUpdate={handleUpdate}
         onDelete={handleDelete}
+        onTriggerPrep={handleTriggerPrep}
       />
 
       {/* Add Modal */}

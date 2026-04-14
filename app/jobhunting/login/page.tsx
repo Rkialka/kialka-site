@@ -19,9 +19,7 @@ export default function JobHuntingLoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
       })
-      if (!res.ok) {
-        throw new Error('Invalid password')
-      }
+      if (!res.ok) throw new Error('Invalid password')
       router.push('/jobhunting')
     } catch {
       setError('Invalid password')
@@ -30,41 +28,106 @@ export default function JobHuntingLoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-6" style={{ backgroundColor: '#0E0C08' }}>
-      <div
-        className="w-full max-w-sm p-8"
-        style={{ backgroundColor: '#1A1916', border: '1px solid #2E2C28', borderRadius: '12px' }}
-      >
-        <h1 className="text-xl font-semibold mb-2" style={{ color: '#F5F0E8' }}>Job Hunt Dashboard</h1>
-        <p className="text-sm mb-6" style={{ color: '#9A9488' }}>Private access only.</p>
+    <main style={{
+      minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '24px', backgroundColor: '#0E0C08',
+      backgroundImage: 'radial-gradient(circle at 50% 50%, #15130F 0%, #0E0C08 100%)',
+      fontFamily: 'Manrope, sans-serif',
+    }}>
+      <div style={{ width: '100%', maxWidth: '360px' }}>
 
-        <form onSubmit={handleSubmit}>
-          <label className="block text-sm mb-1.5" style={{ color: '#9A9488' }}>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2.5 mb-4 outline-none text-sm"
-            style={{
-              backgroundColor: '#0E0C08',
-              border: '1px solid #2E2C28',
-              borderRadius: '8px',
-              color: '#F5F0E8',
-            }}
-            placeholder="Enter password"
-            required
-            autoFocus
-          />
-          {error && <p className="mb-3 text-sm" style={{ color: '#E84A1C' }}>{error}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2.5 font-medium transition-opacity hover:opacity-80 disabled:opacity-50"
-            style={{ backgroundColor: '#E84A1C', color: '#F5F0E8', borderRadius: '12px' }}
-          >
-            {loading ? 'Signing in...' : 'Sign in'}
-          </button>
-        </form>
+        {/* Card */}
+        <div style={{
+          backgroundColor: '#1A1916',
+          border: '1px solid #2E2C28',
+          padding: '40px',
+        }}>
+
+          {/* Header */}
+          <div style={{ marginBottom: '32px' }}>
+            <div style={{
+              color: '#5C5A54', fontSize: '10px', fontWeight: 700,
+              letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '8px',
+            }}>
+              kialka.com.br
+            </div>
+            <h1 style={{ color: '#F5F0E8', fontSize: '22px', fontWeight: 800, letterSpacing: '-0.03em', margin: 0 }}>
+              Access
+            </h1>
+            <div style={{ marginTop: '10px', width: '32px', height: '2px', backgroundColor: '#E84A1C' }} />
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div>
+              <label className="sr-only" htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                autoFocus
+                style={{
+                  width: '100%', padding: '14px 16px',
+                  backgroundColor: '#0E0C08',
+                  border: '1px solid #2E2C28',
+                  color: '#F5F0E8', fontSize: '14px',
+                  outline: 'none', boxSizing: 'border-box',
+                  fontFamily: 'Manrope, sans-serif',
+                  transition: 'border-color 0.2s',
+                }}
+                onFocus={e => (e.target.style.borderColor = '#E84A1C')}
+                onBlur={e => (e.target.style.borderColor = '#2E2C28')}
+              />
+            </div>
+
+            {error && (
+              <p style={{ color: '#E84A1C', fontSize: '13px', margin: 0 }}>{error}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: '100%', padding: '16px',
+                backgroundColor: '#E84A1C', color: '#F5F0E8',
+                border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
+                fontSize: '11px', fontWeight: 700,
+                letterSpacing: '0.2em', textTransform: 'uppercase',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                opacity: loading ? 0.6 : 1,
+                transition: 'opacity 0.2s',
+                fontFamily: 'Manrope, sans-serif',
+              }}
+            >
+              {loading ? 'Signing in...' : (
+                <>
+                  Enter
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Footer detail */}
+          <div style={{ marginTop: '28px', textAlign: 'center' }}>
+            <span style={{
+              color: '#5C5A54', fontSize: '10px',
+              letterSpacing: '0.3em', textTransform: 'uppercase', fontWeight: 500,
+            }}>
+              Private Area
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom line */}
+        <div style={{
+          marginTop: '0',
+          height: '1px',
+          background: 'linear-gradient(to right, transparent, #5b4039, transparent)',
+        }} />
       </div>
     </main>
   )

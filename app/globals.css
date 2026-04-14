@@ -1,9 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 body {
   background: #0E0C08;
   color: #F5F0E8;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Manrope', sans-serif;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  vertical-align: middle;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.magma-glow { background: linear-gradient(135deg, #E84A1C 0%, #FD592A 100%); }
+
+/* Stitch design tokens */
+:root {
+  --bg:          #0E0C08;
+  --surface:     #1A1916;
+  --surface-mid: #221f1b;
+  --surface-high:#2c2a25;
+  --border:      #2E2C28;
+  --border-warm: #5b4039;
+  --text:        #F5F0E8;
+  --text-muted:  #9A9488;
+  --text-faint:  #5C5A54;
+  --accent:      #E84A1C;
+  --accent-2:    #FD592A;
+  --success:     #3B6D11;
+  --info:        #185FA5;
+  --warning:     #BA7517;
+  --danger:      #A32D2D;
 }

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#001d35",
+                    "surface-container-low": "#1e1b17",
+                    "on-secondary": "#32302c",
+                    "outline": "#ab8981",
+                    "surface-container-highest": "#37342f",
+                    "surface-variant": "#37342f",
+                    "surface-tint": "#ffb5a1",
+                    "secondary-container": "#4b4944",
+                    "tertiary-container": "#2b95ec",
+                    "tertiary-fixed-dim": "#9dcaff",
+                    "primary-container": "#fd592a",
+                    "primary": "#ffb5a1",
+                    "surface-dim": "#15130f",
+                    "surface-container-lowest": "#100e0a",
+                    "tertiary-fixed": "#d1e4ff",
+                    "error-container": "#93000a",
+                    "on-tertiary-container": "#002b4c",
+                    "on-primary-fixed-variant": "#882000",
+                    "on-secondary-fixed": "#1d1b18",
+                    "secondary-fixed": "#e7e2db",
+                    "on-primary": "#601400",
+                    "on-error-container": "#ffdad6",
+                    "on-error": "#690005",
+                    "on-surface": "#e8e1da",
+                    "inverse-primary": "#b22c00",
+                    "surface": "#15130f",
+                    "on-tertiary-fixed-variant": "#00497c",
+                    "inverse-surface": "#e8e1da",
+                    "on-primary-container": "#541000",
+                    "inverse-on-surface": "#33302b",
+                    "on-tertiary": "#003257",
+                    "on-secondary-fixed-variant": "#494642",
+                    "on-primary-fixed": "#3b0800",
+                    "on-secondary-container": "#bcb8b2",
+                    "primary-fixed-dim": "#ffb5a1",
+                    "primary-fixed": "#ffdbd1",
+                    "outline-variant": "#5b4039",
+                    "secondary-fixed-dim": "#cbc6c0",
+                    "surface-container-high": "#2c2a25",
+                    "tertiary": "#9dcaff",
+                    "background": "#15130f",
+                    "surface-container": "#221f1b",
+                    "on-surface-variant": "#e4beb5",
+                    "surface-bright": "#3c3933",
+                    "on-background": "#e8e1da",
+                    "error": "#ffb4ab",
+                    "secondary": "#cbc6c0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Manrope"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #100E0A;
+            color: #E8E1DA;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .insight-slider-active {
+            background-color: #FFB5A1;
+            color: #601400;
+        }
+        textarea:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body class="font-body min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="w-full top-0 sticky z-50 bg-[#100E0A] transition-all border-b border-[#5B4039]/10">
+<div class="flex justify-between items-center px-8 py-4 w-full max-w-7xl mx-auto font-['Manrope'] antialiased tracking-tight">
+<div class="text-xl font-extrabold tracking-tighter text-[#FD592A]">
+                Sovereign Insight
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#E8E1DA] opacity-70 hover:text-[#FD592A] transition-colors duration-300" href="#">Dashboard</a>
+<a class="text-[#FFB5A1] font-bold border-b-2 border-[#FD592A] pb-1 hover:text-[#FD592A] transition-colors duration-300" href="#">Feedback</a>
+<a class="text-[#E8E1DA] opacity-70 hover:text-[#FD592A] transition-colors duration-300" href="#">Reports</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#E8E1DA] opacity-70 hover:text-[#FD592A] cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-[#E8E1DA] opacity-70 hover:text-[#FD592A] cursor-pointer">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="Executive user profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a professional executive in a dark suit with dramatic lighting in a modern office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAh8XTKsrC79bX3GoQKQiMP_8CXx6vjWUwzqY1OMqdkImQdYngZ6UWFBk7-xhgx4nCZdoaEf0PKKPDqN0Lk9sgD_PndR7tGfd8QZFsaqtxgr5ActQeI1d3egS98Ps-o06H2xDPn3ifLeyEpc2cXXRjpj3q-Hw6QCh7hUOm__QTRMVHLqcrwxOb2yUBajw7y7Xu4v7QeuoH7NeVDhLuUQKNsQDq5dnFUJFkwwTntj6lrWVS19XIfBzXNu2yUMKLrPU3C2NT_C_31lcc"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-[640px] mx-auto px-6 py-16">
+<!-- Header Section -->
+<header class="mb-12 text-left">
+<h1 class="text-4xl md:text-5xl font-extrabold text-[#F5F0E8] tracking-tighter mb-4">360 Feedback</h1>
+<p class="text-on-surface-variant font-medium opacity-80 leading-relaxed max-w-md">
+                Provide precise, actionable executive insight. Your perspective shapes the professional evolution of the organization.
+            </p>
+</header>
+<!-- Form Canvas -->
+<form class="space-y-8">
+<!-- Card 1: Strengths -->
+<div class="bg-[#1A1916] border border-[#2E2C28] p-8 rounded-lg shadow-2xl transition-all hover:border-[#FD592A]/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-[#FD592A]" style="font-variation-settings: 'FILL' 1;">star</span>
+<label class="text-[0.75rem] uppercase tracking-widest font-bold text-on-surface">Strengths</label>
+</div>
+<div class="relative group">
+<textarea class="w-full bg-surface-container-highest border-0 rounded-sm p-4 text-on-surface placeholder:text-on-secondary-container/30 focus:ring-1 focus:ring-primary/40 transition-all min-h-[120px] resize-none" placeholder="What exceptional value does this leader consistently provide?"></textarea>
+</div>
+</div>
+<!-- Card 2: Growth Areas -->
+<div class="bg-[#1A1916] border border-[#2E2C28] p-8 rounded-lg shadow-2xl transition-all hover:border-[#FD592A]/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-[#FD592A]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<label class="text-[0.75rem] uppercase tracking-widest font-bold text-on-surface">Growth Areas</label>
+</div>
+<div class="relative group">
+<textarea class="w-full bg-surface-container-highest border-0 rounded-sm p-4 text-on-surface placeholder:text-on-secondary-container/30 focus:ring-1 focus:ring-primary/40 transition-all min-h-[120px] resize-none" placeholder="Identify specific behaviors or skills that require refinement for the next level of impact."></textarea>
+</div>
+</div>
+<!-- Card 3: Teamwork -->
+<div class="bg-[#1A1916] border border-[#2E2C28] p-8 rounded-lg shadow-2xl transition-all hover:border-[#FD592A]/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-[#FD592A]" style="font-variation-settings: 'FILL' 1;">groups</span>
+<label class="text-[0.75rem] uppercase tracking-widest font-bold text-on-surface">Teamwork</label>
+</div>
+<div class="relative group">
+<textarea class="w-full bg-surface-container-highest border-0 rounded-sm p-4 text-on-surface placeholder:text-on-secondary-container/30 focus:ring-1 focus:ring-primary/40 transition-all min-h-[120px] resize-none" placeholder="How effectively does this individual leverage the strengths of others and foster collaboration?"></textarea>
+</div>
+</div>
+<!-- Card 4: Impact -->
+<div class="bg-[#1A1916] border border-[#2E2C28] p-8 rounded-lg shadow-2xl transition-all hover:border-[#FD592A]/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-[#FD592A]" style="font-variation-settings: 'FILL' 1;">shutter_speed</span>
+<label class="text-[0.75rem] uppercase tracking-widest font-bold text-on-surface">Impact</label>
+</div>
+<div class="relative group">
+<textarea class="w-full bg-surface-container-highest border-0 rounded-sm p-4 text-on-surface placeholder:text-on-secondary-container/30 focus:ring-1 focus:ring-primary/40 transition-all min-h-[120px] resize-none" placeholder="Evaluate the tangible results and strategic influence achieved in the recent period."></textarea>
+</div>
+</div>
+<!-- Card 5: Leadership -->
+<div class="bg-[#1A1916] border border-[#2E2C28] p-8 rounded-lg shadow-2xl transition-all hover:border-[#FD592A]/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-[#FD592A]" style="font-variation-settings: 'FILL' 1;">shield</span>
+<label class="text-[0.75rem] uppercase tracking-widest font-bold text-on-surface">Leadership</label>
+</div>
+<div class="relative group">
+<textarea class="w-full bg-surface-container-highest border-0 rounded-sm p-4 text-on-surface placeholder:text-on-secondary-container/30 focus:ring-1 focus:ring-primary/40 transition-all min-h-[120px] resize-none" placeholder="Does this person inspire confidence and model the organization's core values?"></textarea>
+</div>
+</div>
+<!-- Primary CTA -->
+<div class="pt-8 pb-12">
+<button class="w-full bg-[#E84A1C] hover:bg-[#FD592A] text-on-primary-container font-bold py-5 rounded-sm transition-all duration-300 transform active:scale-[0.98] tracking-widest uppercase text-sm shadow-xl hover:shadow-primary/20 group flex items-center justify-center gap-3" type="submit">
+                    Submit Feedback
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<p class="text-center mt-6 text-[0.7rem] uppercase tracking-[0.2em] text-[#E8E1DA]/30">
+                    Sovereign Insight • Professional Assurance 
+                </p>
+</div>
+</form>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 mt-auto bg-[#100E0A] border-t border-[#5B4039]/20">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 w-full max-w-[640px] mx-auto gap-8">
+<span class="font-['Manrope'] text-[0.75rem] uppercase tracking-widest text-[#E8E1DA]/40 text-center md:text-left">
+                © 2024 Sovereign Insight. Confidential Executive Briefing.
+            </span>
+<div class="flex gap-6">
+<a class="font-['Manrope'] text-[0.75rem] uppercase tracking-widest text-[#E8E1DA]/40 hover:text-[#FD592A] transition-colors" href="#">Privacy Policy</a>
+<a class="font-['Manrope'] text-[0.75rem] uppercase tracking-widest text-[#E8E1DA]/40 hover:text-[#FD592A] transition-colors" href="#">Terms of Service</a>
+<a class="font-['Manrope'] text-[0.75rem] uppercase tracking-widest text-[#E8E1DA]/40 hover:text-[#FD592A] transition-colors" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+</body></html>
