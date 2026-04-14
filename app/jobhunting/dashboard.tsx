@@ -1728,7 +1728,7 @@ function DailyLogSection({ logs, loading }: { logs: DailyLog[]; loading: boolean
 
 // ─── CommandCenter ────────────────────────────────────────────────────────────
 
-type CommandType = 'new_search' | 'email_check' | 'weekly_review' | 'interview_prep' | 'sync' | 'process_applications'
+type CommandType = 'new_search' | 'email_check' | 'weekly_review' | 'interview_prep' | 'sync' | 'process_applications' | 'generate_insights'
 type CommandStatus = 'pending' | 'running' | 'done' | 'error'
 
 type JhCommand = {
@@ -1748,6 +1748,7 @@ const COMMAND_LABELS: Record<CommandType, string> = {
   interview_prep: 'Interview Prep',
   sync: 'Sync Tracker',
   process_applications: 'Process Pending',
+  generate_insights: 'Insights',
 }
 
 const COMMAND_ICONS: Record<CommandType, string> = {
@@ -1757,6 +1758,7 @@ const COMMAND_ICONS: Record<CommandType, string> = {
   interview_prep: '🎯',
   sync: '🔄',
   process_applications: '🚀',
+  generate_insights: '💡',
 }
 
 const COMMAND_STATUS_COLORS: Record<CommandStatus, string> = {
@@ -1892,13 +1894,13 @@ function CommandCenter({ onTrigger }: { onTrigger: (type: CommandType, payload?:
                 minWidth: 0,
               }}
             >
-              <span style={{ fontSize: '14px', flexShrink: 0 }}>{COMMAND_ICONS[cmd.command_type]}</span>
+              <span style={{ fontSize: '14px', flexShrink: 0 }}>{COMMAND_ICONS[cmd.command_type] ?? '⚙️'}</span>
               <span style={{ color: '#F5F0E8', fontSize: '12px', fontWeight: 600, whiteSpace: 'nowrap' }}>
-                {COMMAND_LABELS[cmd.command_type]}
+                {COMMAND_LABELS[cmd.command_type] ?? cmd.command_type}
               </span>
               <span
                 style={{
-                  backgroundColor: COMMAND_STATUS_COLORS[cmd.status],
+                  backgroundColor: COMMAND_STATUS_COLORS[cmd.status] ?? '#5C5A54',
                   color: '#F5F0E8',
                   fontSize: '10px',
                   fontWeight: 700,
