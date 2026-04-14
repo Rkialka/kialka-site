@@ -202,7 +202,7 @@ function KanbanCard({ app, onClick, onProcess }: { app: Application; onClick: ()
         {app.role}
       </p>
 
-      {/* ATS + Easy Apply badge + Status pill */}
+      {/* ATS + Easy Apply badge + Status pill + CV/QA indicators */}
       <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '6px' }}>
         {easyApply ? (
           <span
@@ -235,9 +235,39 @@ function KanbanCard({ app, onClick, onProcess }: { app: Application; onClick: ()
         >
           {STATUS_LABELS[app.status]}
         </span>
+        {app.cv_file && (
+          <span
+            title={app.cv_file}
+            style={{
+              color: '#5C5A54',
+              fontSize: '10px',
+              fontWeight: 600,
+              padding: '1px 5px',
+              borderRadius: '3px',
+              border: '1px solid #2E2C28',
+            }}
+          >
+            📄 CV
+          </span>
+        )}
+        {app.application_qa && app.application_qa.length > 0 && (
+          <span
+            title={`${app.application_qa.length} form questions answered`}
+            style={{
+              color: '#5C5A54',
+              fontSize: '10px',
+              fontWeight: 600,
+              padding: '1px 5px',
+              borderRadius: '3px',
+              border: '1px solid #2E2C28',
+            }}
+          >
+            📋 {app.application_qa.length}Q
+          </span>
+        )}
       </div>
 
-      {/* Apply + Process buttons */}
+      {/* Open JD + Process buttons */}
       {app.apply_url && (
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: app.manual_action ? '4px' : '0' }}>
           <a
@@ -252,9 +282,9 @@ function KanbanCard({ app, onClick, onProcess }: { app: Application; onClick: ()
               letterSpacing: '0.05em',
             }}
           >
-            Apply →
+            Open →
           </a>
-          {app.status === 'cv_ready' && onProcess && (
+          {(app.status === 'cv_ready' || app.status === 'action_needed') && onProcess && (
             <button
               onClick={e => { e.stopPropagation(); onProcess(app) }}
               style={{
@@ -1041,7 +1071,7 @@ function DetailPanel({
                 {app.priority && <span style={{ fontSize: '18px' }}>🔥</span>}
                 {app.score !== null && (
                   <span style={{ backgroundColor: scoreColor(app.score), color: '#F5F0E8', fontSize: '12px', fontWeight: 700, padding: '2px 8px', borderRadius: '3px' }}>
-                    {app.score}/20
+                    {app.score}/26
                   </span>
                 )}
                 {app.track && (
@@ -1156,7 +1186,6 @@ function DetailPanel({
               {[
                 { label: 'ATS', value: app.ats },
                 { label: 'Applied', value: formatDate(app.applied_at) },
-                { label: 'CV File', value: app.cv_file },
                 { label: 'Track', value: app.track },
               ].map(item => (
                 <div key={item.label}>
@@ -1164,10 +1193,26 @@ function DetailPanel({
                   <p style={{ color: '#9A9488', fontSize: '12px', wordBreak: 'break-word' }}>{item.value || '—'}</p>
                 </div>
               ))}
+              <div>
+                <p style={{ color: '#5C5A54', fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '3px' }}>CV File</p>
+                {app.cv_file ? (
+                  <a
+                    href={`http://localhost:9876/${app.cv_file.replace(/^cvs\//, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Download from local CV server (watcher must be running)"
+                    style={{ color: '#185FA5', fontSize: '12px', wordBreak: 'break-word', textDecoration: 'underline' }}
+                  >
+                    {app.cv_file}
+                  </a>
+                ) : (
+                  <p style={{ color: '#9A9488', fontSize: '12px' }}>—</p>
+                )}
+              </div>
             </div>
 
-            {/* Minhas anotações — only for active/pipeline statuses */}
-            {!['cv_ready', 'closed', 'skip'].includes(app.status) && (
+            {/* Minhas anotações — for all statuses except archive */}
+            {!['closed', 'skip'].includes(app.status) && (
               <div style={{
                 marginBottom: '20px',
                 backgroundColor: '#0E0C08',
@@ -1535,8 +1580,8 @@ function AddApplicationModal({
               <input value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))} required style={inputStyle} placeholder="e.g. Country Manager Brazil" />
             </div>
             <div>
-              <label style={labelStyle}>Score (/20)</label>
-              <input type="number" min="1" max="20" value={form.score} onChange={e => setForm(f => ({ ...f, score: e.target.value }))} style={inputStyle} placeholder="e.g. 18" />
+              <label style={labelStyle}>Score (/26)</label>
+              <input type="number" min="1" max="26" value={form.score} onChange={e => setForm(f => ({ ...f, score: e.target.value }))} style={inputStyle} placeholder="e.g. 18" />
             </div>
             <div>
               <label style={labelStyle}>Status</label>
