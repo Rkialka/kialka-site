@@ -968,7 +968,12 @@ function DetailPanel({
     if (!app) return
     setStatusValue(newStatus)
     setSavingStatus(true)
-    await onUpdate(app.id, { status: newStatus })
+    const fields: Partial<Application> = { status: newStatus }
+    // Auto-fill applied_at when moving to applied and it's not already set
+    if (newStatus === 'applied' && !app.applied_at) {
+      fields.applied_at = new Date().toISOString().split('T')[0]
+    }
+    await onUpdate(app.id, fields)
     setSavingStatus(false)
   }
 
