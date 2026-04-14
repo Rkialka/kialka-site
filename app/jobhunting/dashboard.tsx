@@ -267,9 +267,29 @@ function KanbanCard({ app, onClick, onProcess }: { app: Application; onClick: ()
         )}
       </div>
 
-      {/* Open JD + Process buttons */}
-      {app.apply_url && (
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: app.manual_action ? '4px' : '0' }}>
+      {/* Action button — Process (cv_ready/action_needed) OR Open link (other statuses) */}
+      {(app.status === 'cv_ready' || app.status === 'action_needed') && onProcess ? (
+        <div style={{ marginBottom: app.manual_action ? '4px' : '0' }}>
+          <button
+            onClick={e => { e.stopPropagation(); onProcess(app) }}
+            style={{
+              backgroundColor: app.status === 'action_needed' ? '#BA7517' : '#185FA5',
+              border: 'none',
+              borderRadius: '3px',
+              color: '#F5F0E8',
+              fontSize: '10px',
+              fontWeight: 700,
+              padding: '3px 10px',
+              cursor: 'pointer',
+              letterSpacing: '0.05em',
+              fontFamily: 'Manrope, sans-serif',
+            }}
+          >
+            🚀 Process
+          </button>
+        </div>
+      ) : app.apply_url ? (
+        <div style={{ marginBottom: app.manual_action ? '4px' : '0' }}>
           <a
             href={app.apply_url}
             target="_blank"
@@ -284,27 +304,8 @@ function KanbanCard({ app, onClick, onProcess }: { app: Application; onClick: ()
           >
             Open →
           </a>
-          {(app.status === 'cv_ready' || app.status === 'action_needed') && onProcess && (
-            <button
-              onClick={e => { e.stopPropagation(); onProcess(app) }}
-              style={{
-                backgroundColor: '#185FA5',
-                border: 'none',
-                borderRadius: '3px',
-                color: '#F5F0E8',
-                fontSize: '10px',
-                fontWeight: 700,
-                padding: '2px 8px',
-                cursor: 'pointer',
-                letterSpacing: '0.05em',
-                fontFamily: 'Manrope, sans-serif',
-              }}
-            >
-              🚀 Process
-            </button>
-          )}
         </div>
-      )}
+      ) : null}
 
       {/* Manual action */}
       {app.manual_action && (
@@ -528,7 +529,7 @@ function ListView({
                       onClick={e => e.stopPropagation()}
                       style={{ color: '#E84A1C', fontSize: '12px', fontWeight: 600 }}
                     >
-                      Apply →
+                      Open →
                     </a>
                   )}
                 </td>
