@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -1792,7 +1792,7 @@ function CommandCenter({ onTrigger }: { onTrigger: (type: CommandType, payload?:
     try {
       const res = await fetch('/api/jobhunting/commands')
       const json = await res.json()
-      setCommands((json.data ?? []).slice(0, 5))
+      setCommands((json.data ?? []).slice(0, 10))
     } catch {
       // silently fail
     }
@@ -1930,6 +1930,40 @@ function CommandCenter({ onTrigger }: { onTrigger: (type: CommandType, payload?:
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
+// ─── Toast ────────────────────────────────────────────────────────────────────
+
+type Toast = { id: number; message: string; type: 'success' | 'error' }
+
+function ToastContainer({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: (id: number) => void }) {
+  if (toasts.length === 0) return null
+  return (
+    <div style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 999, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      {toasts.map(t => (
+        <div
+          key={t.id}
+          onClick={() => onDismiss(t.id)}
+          style={{
+            backgroundColor: t.type === 'success' ? '#1A2E12' : '#2E1212',
+            border: `1px solid ${t.type === 'success' ? '#3B6D11' : '#A32D2D'}`,
+            borderRadius: '4px',
+            padding: '10px 16px',
+            color: '#F5F0E8',
+            fontSize: '13px',
+            fontFamily: 'Manrope, sans-serif',
+            cursor: 'pointer',
+            maxWidth: '320px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+          }}
+        >
+          {t.type === 'success' ? '✅ ' : '❌ '}{t.message}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ─── Main Dashboard ───────────────────────────────────────────────────────────
+
 export default function JobHuntingDashboard() {
   const [applications, setApplications] = useState<Application[]>([])
   const [logs, setLogs] = useState<DailyLog[]>([])
@@ -1937,6 +1971,14 @@ export default function JobHuntingDashboard() {
   const [view, setView] = useState<'kanban' | 'list'>('kanban')
   const [loading, setLoading] = useState(true)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [toasts, setToasts] = useState<Toast[]>([])
+  const toastIdRef = useRef(0)
+
+  const addToast = useCallback((message: string, type: 'success' | 'error' = 'success') => {
+    const id = ++toastIdRef.current
+    setToasts(prev => [...prev, { id, message, type }])
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 4000)
+  }, [])
 
   const fetchAll = useCallback(async () => {
     setLoading(true)
@@ -2021,7 +2063,7 @@ export default function JobHuntingDashboard() {
 
   const handleTriggerCommand = useCallback(async (type: CommandType, payload?: Record<string, string>) => {
     try {
-      await fetch('/api/jobhunting/commands', {
+      const res = await fetch('/api/jobhunting/commands', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -2033,10 +2075,17 @@ export default function JobHuntingDashboard() {
           triggered_by: 'website',
         }),
       })
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}))
+        addToast(`Failed to trigger ${type}: ${json.error ?? res.status}`, 'error')
+      } else {
+        addToast(`Command dispatched: ${type}`, 'success')
+      }
     } catch (err) {
+      addToast(`Network error triggering ${type}`, 'error')
       console.error('Trigger command failed', err)
     }
-  }, [])
+  }, [addToast])
 
   const handleTriggerPrep = useCallback(async (app: Application) => {
     await handleTriggerCommand('interview_prep', {
@@ -2212,6 +2261,9 @@ export default function JobHuntingDashboard() {
           onAdd={handleAdd}
         />
       )}
+
+      {/* Toasts */}
+      <ToastContainer toasts={toasts} onDismiss={id => setToasts(prev => prev.filter(t => t.id !== id))} />
     </>
   )
 }
